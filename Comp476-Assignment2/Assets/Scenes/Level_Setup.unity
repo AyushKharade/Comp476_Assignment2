@@ -363,11 +363,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 2010008095}
   - {fileID: 712258205}
+  Parent: {fileID: 0}
 --- !u!23 &411316067
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -457,8 +461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4104c9d90575f79429d1d3c893279a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartNode: {fileID: 0}
-  EndNode: {fileID: 0}
+  StartNode: {fileID: 411316063}
+  EndNode: {fileID: 636924656}
+  NodesParent: {fileID: 855570048}
 --- !u!1 &562781032
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,12 +799,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 712258205}
   - {fileID: 2118317612}
   - {fileID: 2139402450}
+  Parent: {fileID: 0}
 --- !u!23 &636924660
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -996,12 +1005,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 411316063}
   - {fileID: 636924656}
   - {fileID: 2118317612}
+  Parent: {fileID: 0}
 --- !u!23 &712258209
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1353,11 +1366,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 1171681035}
   - {fileID: 1824926057}
+  Parent: {fileID: 0}
 --- !u!23 &907066017
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1638,11 +1655,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 2118317612}
   - {fileID: 907066013}
+  Parent: {fileID: 0}
 --- !u!23 &1171681039
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1939,10 +1960,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 2118317612}
+  Parent: {fileID: 0}
 --- !u!23 &1824926061
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2127,10 +2152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 411316063}
+  Parent: {fileID: 0}
 --- !u!23 &2010008099
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2500,11 +2529,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 712258205}
   - {fileID: 636924656}
+  Parent: {fileID: 0}
 --- !u!23 &2118317616
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2610,10 +2643,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
   isFinalNode: 0
   isInitialNode: 0
   neighbours:
   - {fileID: 636924656}
+  Parent: {fileID: 0}
 --- !u!23 &2139402454
 MeshRenderer:
   m_ObjectHideFlags: 0

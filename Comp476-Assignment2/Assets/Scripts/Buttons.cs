@@ -15,6 +15,7 @@ public class Buttons : MonoBehaviour
     {
         // call start function on A*.
         Debug.Log("Started Pathfinding.");
+        AStarRef.GetComponent<Pathfinding>().StartPathfinding();
     }
 
 }

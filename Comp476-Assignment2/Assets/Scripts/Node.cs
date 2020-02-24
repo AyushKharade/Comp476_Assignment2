@@ -13,9 +13,9 @@ public class Node : MonoBehaviour
 
 
     // variables
-    Vector3 position;
-    float gCost;
-    float hCost;
+    [HideInInspector]public Vector3 position;
+    public float gCost;
+    public float hCost;
     
 
     public bool isFinalNode;
@@ -23,6 +23,7 @@ public class Node : MonoBehaviour
 
     public List<GameObject> neighbours;
 
+    public GameObject Parent;
 
 
     void Start()
@@ -34,9 +35,20 @@ public class Node : MonoBehaviour
     }
 
 
-    public float GetCost()
+    public float GetFCost()
     {
         return gCost + hCost;
+    }
+
+    public void CalculateFCost(Vector3 start, Vector3 end)
+    {
+        gCost = Vector3.Distance(start, transform.position);
+        hCost = Vector3.Distance(end, transform.position);
+    }
+
+    public void SetParentPath(GameObject g)
+    {
+        Parent = g;
     }
     
 }
