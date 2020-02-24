@@ -16,19 +16,27 @@ public class Node : MonoBehaviour
     Vector3 position;
     float gCost;
     float hCost;
-    float totalcost;
+    
 
-    bool isFinalNode;
-    bool isInitialNode;
+    public bool isFinalNode;
+    public bool isInitialNode;
 
-    List<GameObject> neighbours;
+    public List<GameObject> neighbours;
 
 
 
     void Start()
     {
         position = transform.position;
+        // check if has atleast one neighbour
+        if (neighbours.Count == 0)
+            Debug.Log(transform.name+" has 0 NEIGHBOURS");
     }
 
+
+    public float GetCost()
+    {
+        return gCost + hCost;
+    }
     
 }

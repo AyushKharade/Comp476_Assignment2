@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public GameObject StartNode;
+    public GameObject EndNode;
+
+
+    List<Node> OpenSet;
+    List<Node> ClosedSet;
+
     void Start()
     {
         
@@ -13,6 +20,25 @@ public class Pathfinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        MouseInput();
+    }
+
+
+
+    void MouseInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            // raycast
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100f))
+            {
+                if (hit.collider.tag == "Node")
+                {
+                    Debug.Log("Clicked a node: "+hit.collider.transform.name);
+                }
+            }
+        }
     }
 }
