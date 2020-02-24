@@ -32,6 +32,8 @@ public class Node : MonoBehaviour
         // check if has atleast one neighbour
         if (neighbours.Count == 0)
             Debug.Log(transform.name+" has 0 NEIGHBOURS");
+
+        Parent = null;
     }
 
 

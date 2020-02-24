@@ -20,7 +20,8 @@ public class Pathfinding : MonoBehaviour
 
     void Start()
     {
-        
+        OpenSet = new List<GameObject>();
+        ClosedSet = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -65,10 +66,10 @@ public class Pathfinding : MonoBehaviour
     {
         startedPathfinding = true;
 
+        OpenSet.Add(StartNode.transform.gameObject);
+
         startNodePos = StartNode.transform.position;
         endNodePos = EndNode.transform.position;
-
-        OpenSet.Add(StartNode);
 
         GameObject curNode = null;
 
