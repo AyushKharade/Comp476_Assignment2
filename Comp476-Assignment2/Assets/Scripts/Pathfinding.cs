@@ -11,12 +11,12 @@ public class Pathfinding : MonoBehaviour
     Vector3 startNodePos;
     Vector3 endNodePos;
 
-    public Transform NodesParent;
+    public Transform ProcessingNode;
 
     bool startedPathfinding;
 
-    List<GameObject> OpenSet;
-    List<GameObject> ClosedSet;
+    public List<GameObject> OpenSet;
+    public List<GameObject> ClosedSet;
 
     void Start()
     {
@@ -72,14 +72,14 @@ public class Pathfinding : MonoBehaviour
         endNodePos = EndNode.transform.position;
 
         GameObject curNode = null;
-
+        bool pathFound=false;
 
         while (OpenSet.Count > 0)
         {
             float lowestFCost = 10000000;
             foreach (GameObject g in OpenSet)
             {
-                if(curNode==null)
+                if (curNode == null)
                     g.GetComponent<Node>().CalculateFCost(startNodePos, endNodePos);
                 else
                     g.GetComponent<Node>().CalculateFCost(curNode.transform.position, endNodePos);
@@ -100,23 +100,45 @@ public class Pathfinding : MonoBehaviour
             if (Vector3.Distance(curNode.transform.position, endNodePos) == 0)
             {
                 Debug.Log("Found end target node.");
+                pathFound = true;
+                TracePath();
+                break;
             }
             else
             {
+                //ProcessingNode = curNode.transform;
                 // scan all neighbours
                 foreach (GameObject ng in curNode.GetComponent<Node>().neighbours)
                 {
-                    if (!ClosedSet.Contains(ng))
+                    if (!OpenSet.Contains(ng))
                     {
                         // if its not in the closed list, add to open list
-                        OpenSet.Add(ng);
-                        ng.GetComponent<Node>().CalculateFCost(startNodePos, endNodePos);
-                        ng.GetComponent<Node>().SetParentPath(curNode);
+                        if (!ClosedSet.Contains(ng))
+                        {
+                            OpenSet.Add(ng);
+                            ng.GetComponent<Node>().CalculateFCost(startNodePos, endNodePos);
+                            ng.GetComponent<Node>().SetParentPath(curNode);
+                        }
                     }
                 }
+
             }
         }
+
+        if (!pathFound)
+            Debug.Log("Path not found");
     }
 
-    
+    void TracePath()
+    {
+        // we are in the end game now, keep back tracking from end node, going through parents untill you find start node.
+        GameObject curNode = EndNode;
+        while (curNode.GetComponent<Node>().Parent != null)
+        {
+            Debug.Log(">> "+curNode.transform.name);
+            GameObject Parent= curNode.GetComponent<Node>().Parent;
+            Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 20f, false);
+            curNode = Parent;
+        }
+    }
 }
