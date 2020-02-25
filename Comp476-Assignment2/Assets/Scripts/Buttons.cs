@@ -18,4 +18,8 @@ public class Buttons : MonoBehaviour
         AStarRef.GetComponent<Pathfinding>().StartPathfinding();
     }
 
+    public void SetStartingNode() { }
+
+    public void SetEndingNode() { }
+
 }

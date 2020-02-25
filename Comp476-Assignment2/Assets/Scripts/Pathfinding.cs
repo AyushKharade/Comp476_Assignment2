@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -11,7 +12,19 @@ public class Pathfinding : MonoBehaviour
     Vector3 startNodePos;
     Vector3 endNodePos;
 
-    public Transform ProcessingNode;
+    [Header("Materials")]
+    public Material GreenMat;
+    public Material RedMat;
+    public Material BlueMat;
+
+
+    [Header("Selection Highlight Prefab")]
+    public GameObject highlightPrefab;
+
+    public Transform CurrentSelectedNode;
+    public GameObject currentSelectedText;
+    GameObject selectedHighlight;
+
 
     bool startedPathfinding;
 
@@ -24,6 +37,8 @@ public class Pathfinding : MonoBehaviour
     {
         OpenSet = new List<GameObject>();
         ClosedSet = new List<GameObject>();
+
+        //GameObject currentSelectedText=GameObject.FindGameObjectWithTag("CurrentSelected");
     }
 
     // Update is called once per frame
@@ -46,7 +61,12 @@ public class Pathfinding : MonoBehaviour
             {
                 if (hit.collider.tag == "Node")
                 {
-                    Debug.Log("Clicked a node: "+hit.collider.transform.name);
+                    //Debug.Log("Clicked a node: "+hit.collider.transform.name);
+                    if (selectedHighlight != null)
+                        Destroy(selectedHighlight.gameObject);
+                    selectedHighlight= Instantiate(highlightPrefab, hit.collider.transform.position,Quaternion.identity);
+                    CurrentSelectedNode = hit.collider.transform;
+                    currentSelectedText.GetComponent<Text>().text = CurrentSelectedNode.transform.name;
                 }
             }
         }
