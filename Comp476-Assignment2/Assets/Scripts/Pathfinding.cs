@@ -25,6 +25,8 @@ public class Pathfinding : MonoBehaviour
     public GameObject currentSelectedText;
     GameObject selectedHighlight;
 
+    public GameObject AllNodesParent;
+
 
     bool startedPathfinding;
 
@@ -32,6 +34,8 @@ public class Pathfinding : MonoBehaviour
     public List<GameObject> ClosedSet;
 
     LinkedList<Transform> Path = new LinkedList<Transform>();       // NPC Follows this path.
+
+    float distanceCovered=0;
 
     void Start()
     {
@@ -142,6 +146,7 @@ public class Pathfinding : MonoBehaviour
         while (OpenSet.Count > 0)
         {
             float lowestFCost = 10000000;
+            GameObject tempNode=null;
             foreach (GameObject g in OpenSet)
             {
                 if (curNode == null)
@@ -153,9 +158,10 @@ public class Pathfinding : MonoBehaviour
                 if (g.GetComponent<Node>().GetFCost() < lowestFCost)
                 {
                     lowestFCost = g.GetComponent<Node>().GetFCost();
-                    curNode = g.gameObject;
+                    tempNode = g.gameObject;
                 }
             }
+            curNode = tempNode;
 
             // you have the node with the lowest fcost.  place it in closed.
             OpenSet.Remove(curNode);
@@ -200,12 +206,14 @@ public class Pathfinding : MonoBehaviour
         GameObject curNode = EndNode;
         while (curNode.GetComponent<Node>().Parent != null)
         {
-            Debug.Log(">> "+curNode.transform.name);
+            //Debug.Log(">> "+curNode.transform.name);
             Path.AddFirst(curNode.transform);         
             GameObject Parent= curNode.GetComponent<Node>().Parent;
             Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 5f, false);
+            distanceCovered += (Vector3.Distance(Parent.transform.position, curNode.transform.position));
             curNode = Parent;
         }
+        Debug.Log("Distance Covered through this path: "+distanceCovered +"units");
     }
 
 
@@ -218,7 +226,17 @@ public class Pathfinding : MonoBehaviour
         EndNode = null;
         startedPathfinding = false;
 
+        CurrentSelectedNode = null;
+
         OpenSet.Clear();
         ClosedSet.Clear();
+
+        // clear parent nodes.
+        for (int i = 0; i < AllNodesParent.transform.childCount;i++)
+        {
+            AllNodesParent.transform.GetChild(i).GetComponent<Node>().Parent = null;
+        }
+
+        distanceCovered = 0;
     }
 }
