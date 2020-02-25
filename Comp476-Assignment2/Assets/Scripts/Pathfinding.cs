@@ -18,6 +18,8 @@ public class Pathfinding : MonoBehaviour
     public List<GameObject> OpenSet;
     public List<GameObject> ClosedSet;
 
+    LinkedList<Transform> Path = new LinkedList<Transform>();       // NPC Follows this path.
+
     void Start()
     {
         OpenSet = new List<GameObject>();
@@ -135,7 +137,8 @@ public class Pathfinding : MonoBehaviour
         GameObject curNode = EndNode;
         while (curNode.GetComponent<Node>().Parent != null)
         {
-            Debug.Log(">> "+curNode.transform.name);
+            //Debug.Log(">> "+curNode.transform.name);
+            Path.AddFirst(curNode.transform);         
             GameObject Parent= curNode.GetComponent<Node>().Parent;
             Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 20f, false);
             curNode = Parent;
