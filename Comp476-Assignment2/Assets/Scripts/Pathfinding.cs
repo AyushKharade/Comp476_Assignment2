@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -11,17 +12,37 @@ public class Pathfinding : MonoBehaviour
     Vector3 startNodePos;
     Vector3 endNodePos;
 
-    public Transform ProcessingNode;
+    [Header("Materials")]
+    public Material GreenMat;
+    public Material RedMat;
+    public Material BlueMat;
+
+
+    [Header("Selection Highlight Prefab")]
+    public GameObject highlightPrefab;
+
+    public Transform CurrentSelectedNode;
+    public GameObject currentSelectedText;
+    GameObject selectedHighlight;
+
+    public GameObject AllNodesParent;
+
 
     bool startedPathfinding;
 
     public List<GameObject> OpenSet;
     public List<GameObject> ClosedSet;
 
+    LinkedList<Transform> Path = new LinkedList<Transform>();       // NPC Follows this path.
+
+    float distanceCovered=0;
+
     void Start()
     {
         OpenSet = new List<GameObject>();
         ClosedSet = new List<GameObject>();
+
+        //GameObject currentSelectedText=GameObject.FindGameObjectWithTag("CurrentSelected");
     }
 
     // Update is called once per frame
@@ -44,7 +65,13 @@ public class Pathfinding : MonoBehaviour
             {
                 if (hit.collider.tag == "Node")
                 {
-                    Debug.Log("Clicked a node: "+hit.collider.transform.name);
+                    //Debug.Log("Clicked a node: "+hit.collider.transform.name);
+                    if (selectedHighlight != null)
+                        Destroy(selectedHighlight.gameObject);
+                    selectedHighlight= Instantiate(highlightPrefab, hit.collider.transform.position,Quaternion.identity);
+
+                    CurrentSelectedNode = hit.collider.transform;
+                    currentSelectedText.GetComponent<Text>().text = CurrentSelectedNode.transform.name;
                 }
             }
         }
@@ -60,6 +87,48 @@ public class Pathfinding : MonoBehaviour
      * 
      */
 
+    public void SetStartNode()
+    {
+        if (StartNode == null)
+        {
+            StartNode = CurrentSelectedNode.gameObject;
+            StartNode.GetComponent<MeshRenderer>().material = GreenMat;
+        }
+        else
+        {
+            //reset older node's color back
+            StartNode.GetComponent<Node>().ResetMaterial();
+            StartNode = CurrentSelectedNode.gameObject;
+            StartNode.GetComponent<MeshRenderer>().material = GreenMat;
+        }
+
+        Destroy(selectedHighlight);
+        selectedHighlight = null;
+        currentSelectedText.GetComponent<Text>().text = "None";
+    }
+    public void SetEndNode()
+    {
+        if (EndNode == null)
+        {
+            EndNode = CurrentSelectedNode.gameObject;
+            EndNode.GetComponent<MeshRenderer>().material = RedMat;
+        }
+        else
+        {
+            //reset its color back
+            //reset older node's color back
+            EndNode.GetComponent<Node>().ResetMaterial();
+            EndNode = CurrentSelectedNode.gameObject;
+            EndNode.GetComponent<MeshRenderer>().material = RedMat;
+        }
+
+        Destroy(selectedHighlight);
+        selectedHighlight = null;
+        currentSelectedText.GetComponent<Text>().text = "None";
+    }
+
+    
+    //-------------------------------------------------------------------------------------------------------------------
 
 
     public void StartPathfinding()
@@ -77,6 +146,7 @@ public class Pathfinding : MonoBehaviour
         while (OpenSet.Count > 0)
         {
             float lowestFCost = 10000000;
+            GameObject tempNode=null;
             foreach (GameObject g in OpenSet)
             {
                 if (curNode == null)
@@ -88,9 +158,10 @@ public class Pathfinding : MonoBehaviour
                 if (g.GetComponent<Node>().GetFCost() < lowestFCost)
                 {
                     lowestFCost = g.GetComponent<Node>().GetFCost();
-                    curNode = g.gameObject;
+                    tempNode = g.gameObject;
                 }
             }
+            curNode = tempNode;
 
             // you have the node with the lowest fcost.  place it in closed.
             OpenSet.Remove(curNode);
@@ -135,10 +206,37 @@ public class Pathfinding : MonoBehaviour
         GameObject curNode = EndNode;
         while (curNode.GetComponent<Node>().Parent != null)
         {
-            Debug.Log(">> "+curNode.transform.name);
+            //Debug.Log(">> "+curNode.transform.name);
+            Path.AddFirst(curNode.transform);         
             GameObject Parent= curNode.GetComponent<Node>().Parent;
-            Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 20f, false);
+            Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 5f, false);
+            distanceCovered += (Vector3.Distance(Parent.transform.position, curNode.transform.position));
             curNode = Parent;
         }
+        Debug.Log("Distance Covered through this path: "+distanceCovered +"units");
+    }
+
+
+    public void ResetPathfinding()
+    {
+        StartNode.GetComponent<Node>().ResetMaterial();
+        EndNode.GetComponent<Node>().ResetMaterial();
+
+        StartNode = null;
+        EndNode = null;
+        startedPathfinding = false;
+
+        CurrentSelectedNode = null;
+
+        OpenSet.Clear();
+        ClosedSet.Clear();
+
+        // clear parent nodes.
+        for (int i = 0; i < AllNodesParent.transform.childCount;i++)
+        {
+            AllNodesParent.transform.GetChild(i).GetComponent<Node>().Parent = null;
+        }
+
+        distanceCovered = 0;
     }
 }
