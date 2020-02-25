@@ -65,6 +65,7 @@ public class Pathfinding : MonoBehaviour
                     if (selectedHighlight != null)
                         Destroy(selectedHighlight.gameObject);
                     selectedHighlight= Instantiate(highlightPrefab, hit.collider.transform.position,Quaternion.identity);
+
                     CurrentSelectedNode = hit.collider.transform;
                     currentSelectedText.GetComponent<Text>().text = CurrentSelectedNode.transform.name;
                 }
@@ -82,6 +83,48 @@ public class Pathfinding : MonoBehaviour
      * 
      */
 
+    public void SetStartNode()
+    {
+        if (StartNode == null)
+        {
+            StartNode = CurrentSelectedNode.gameObject;
+            StartNode.GetComponent<MeshRenderer>().material = GreenMat;
+        }
+        else
+        {
+            //reset older node's color back
+            StartNode.GetComponent<Node>().ResetMaterial();
+            StartNode = CurrentSelectedNode.gameObject;
+            StartNode.GetComponent<MeshRenderer>().material = GreenMat;
+        }
+
+        Destroy(selectedHighlight);
+        selectedHighlight = null;
+        currentSelectedText.GetComponent<Text>().text = "None";
+    }
+    public void SetEndNode()
+    {
+        if (EndNode == null)
+        {
+            EndNode = CurrentSelectedNode.gameObject;
+            EndNode.GetComponent<MeshRenderer>().material = RedMat;
+        }
+        else
+        {
+            //reset its color back
+            //reset older node's color back
+            EndNode.GetComponent<Node>().ResetMaterial();
+            EndNode = CurrentSelectedNode.gameObject;
+            EndNode.GetComponent<MeshRenderer>().material = RedMat;
+        }
+
+        Destroy(selectedHighlight);
+        selectedHighlight = null;
+        currentSelectedText.GetComponent<Text>().text = "None";
+    }
+
+    
+    //-------------------------------------------------------------------------------------------------------------------
 
 
     public void StartPathfinding()
@@ -157,11 +200,25 @@ public class Pathfinding : MonoBehaviour
         GameObject curNode = EndNode;
         while (curNode.GetComponent<Node>().Parent != null)
         {
-            //Debug.Log(">> "+curNode.transform.name);
+            Debug.Log(">> "+curNode.transform.name);
             Path.AddFirst(curNode.transform);         
             GameObject Parent= curNode.GetComponent<Node>().Parent;
-            Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 20f, false);
+            Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 5f, false);
             curNode = Parent;
         }
+    }
+
+
+    public void ResetPathfinding()
+    {
+        StartNode.GetComponent<Node>().ResetMaterial();
+        EndNode.GetComponent<Node>().ResetMaterial();
+
+        StartNode = null;
+        EndNode = null;
+        startedPathfinding = false;
+
+        OpenSet.Clear();
+        ClosedSet.Clear();
     }
 }

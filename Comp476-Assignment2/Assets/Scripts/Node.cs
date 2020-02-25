@@ -25,9 +25,11 @@ public class Node : MonoBehaviour
 
     public GameObject Parent;
 
+    Material defaultMat;
 
     void Start()
     {
+        defaultMat = GetComponent<MeshRenderer>().material;
         position = transform.position;
         // check if has atleast one neighbour
         if (neighbours.Count == 0)
@@ -51,6 +53,11 @@ public class Node : MonoBehaviour
     public void SetParentPath(GameObject g)
     {
         Parent = g;
+    }
+
+    public void ResetMaterial()
+    {
+        GetComponent<MeshRenderer>().material = defaultMat;
     }
     
 }
