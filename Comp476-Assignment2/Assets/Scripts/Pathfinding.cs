@@ -16,6 +16,7 @@ public class Pathfinding : MonoBehaviour
     public Material GreenMat;
     public Material RedMat;
     public Material BlueMat;
+    public Material YellowMat;
 
 
     [Header("Selection Highlight Prefab")]
@@ -31,18 +32,24 @@ public class Pathfinding : MonoBehaviour
     bool startedPathfinding;
 
     public List<GameObject> OpenSet;
-    public List<GameObject> ClosedSet;
+    public HashSet<GameObject> ClosedSet;
 
     LinkedList<Transform> Path = new LinkedList<Transform>();       // NPC Follows this path.
 
     float distanceCovered=0;
 
+    // auto turn of highlights while showing neighbours
+
+    bool showingNeighbours;
+    float showingTimer;
+
     void Start()
     {
         OpenSet = new List<GameObject>();
-        ClosedSet = new List<GameObject>();
+        ClosedSet = new HashSet<GameObject>();
 
         //GameObject currentSelectedText=GameObject.FindGameObjectWithTag("CurrentSelected");
+        InitStartCosts();
     }
 
     // Update is called once per frame
@@ -50,8 +57,35 @@ public class Pathfinding : MonoBehaviour
     {
         if(!startedPathfinding)
             MouseInput();
+
+        if (showingNeighbours)
+        {
+            showingTimer += Time.deltaTime;
+            if (showingTimer > 3f)
+            {
+                showingNeighbours=false;
+                showingTimer = 0;
+
+                int count = AllNodesParent.transform.childCount;
+                for (int i = 0; i < count; i++)
+                {
+                    AllNodesParent.transform.GetChild(i).GetComponent<Node>().ResetMaterial();
+                }
+            }
+        }
     }
 
+
+    void InitStartCosts()
+    {
+        int count = AllNodesParent.transform.childCount;
+
+        for (int i = 0; i < count; i++)
+        {
+            AllNodesParent.transform.GetChild(i).GetComponent<Node>().CalculateFCost(startNodePos,endNodePos);
+            AllNodesParent.transform.GetChild(i).GetComponent<Node>().Parent = null;
+        }
+    }
 
 
     void MouseInput()
@@ -133,87 +167,210 @@ public class Pathfinding : MonoBehaviour
 
     public void StartPathfinding()
     {
+        // start node and end node are already set.
         startedPathfinding = true;
+        bool pathfound = false;
 
-        OpenSet.Add(StartNode.transform.gameObject);
+        OpenSet.Clear();
+        ClosedSet.Clear();
 
-        startNodePos = StartNode.transform.position;
-        endNodePos = EndNode.transform.position;
+        InitStartCosts();
 
-        GameObject curNode = null;
-        bool pathFound=false;
+        // clear costs
+        OpenSet.Add(StartNode);
 
         while (OpenSet.Count > 0)
         {
-            float lowestFCost = 10000000;
-            GameObject tempNode=null;
-            foreach (GameObject g in OpenSet)
+            // find node with smallest fcost
+            GameObject curNode = null;
+            float leastCost = float.MaxValue;
+
+            foreach (GameObject n in OpenSet)
             {
-                if (curNode == null)
-                    g.GetComponent<Node>().CalculateFCost(startNodePos, endNodePos);
-                else
-                    g.GetComponent<Node>().CalculateFCost(curNode.transform.position, endNodePos);
-
-
-                if (g.GetComponent<Node>().GetFCost() < lowestFCost)
+                n.GetComponent<Node>().CalculateFCost(startNodePos,endNodePos);
+                if (n.GetComponent<Node>().GetFCost() < leastCost)
                 {
-                    lowestFCost = g.GetComponent<Node>().GetFCost();
-                    tempNode = g.gameObject;
+                    curNode = n;
+                    leastCost = n.GetComponent<Node>().GetFCost();
                 }
             }
-            curNode = tempNode;
 
-            // you have the node with the lowest fcost.  place it in closed.
+            Debug.Log("New curNode selected is "+curNode.transform.name +"with fcost"+ curNode.GetComponent<Node>().GetFCost());
+
+            // remove curNode from open, add to closed.
             OpenSet.Remove(curNode);
             ClosedSet.Add(curNode);
+            curNode.GetComponent<MeshRenderer>().material = RedMat;
 
-            // is this the final node?
-            if (Vector3.Distance(curNode.transform.position, endNodePos) == 0)
+            //if (Vector3.Distance(curNode.transform.position,endNodePos) == 0)
+            if(curNode.transform.name == EndNode.transform.name)
             {
-                Debug.Log("Found end target node.");
-                pathFound = true;
+                Debug.Log("Path Found");
+                pathfound = true;
                 TracePath();
                 break;
             }
-            else
+
+
+            // traverse all neighbours
+            foreach (GameObject ng in curNode.GetComponent<Node>().neighbours)
             {
-                //ProcessingNode = curNode.transform;
-                // scan all neighbours
-                foreach (GameObject ng in curNode.GetComponent<Node>().neighbours)
+                if (ClosedSet.Contains(ng))
                 {
+                    continue;
+                }
+                
+
+                float newNeighbourCost = curNode.GetComponent<Node>().gCost;
+                newNeighbourCost += Vector3.Distance(curNode.transform.position, ng.transform.position);
+
+                if (newNeighbourCost < ng.GetComponent<Node>().gCost || !OpenSet.Contains(ng))
+                {
+
+                    // if cost between current node is smaller, update costs
+                    if (newNeighbourCost < ng.GetComponent<Node>().gCost)
+                    {
+                        ng.GetComponent<Node>().gCost = newNeighbourCost;
+                        ng.GetComponent<Node>().hCost = Vector3.Distance(ng.transform.position, endNodePos);
+                        ng.GetComponent<Node>().Parent = curNode;
+
+                    }
+                    //ng.GetComponent<Node>().Parent = curNode;
+
                     if (!OpenSet.Contains(ng))
                     {
-                        // if its not in the closed list, add to open list
-                        if (!ClosedSet.Contains(ng))
+                        OpenSet.Add(ng);
+                        if(ng.GetComponent<Node>().Parent==null)
+                            ng.GetComponent<Node>().Parent = curNode;
+
+                    }
+                }
+            }
+
+        }
+
+        //TracePath();
+
+        if (!pathfound)
+            Debug.Log("Didnt find path");
+
+
+        
+    }
+
+
+    // second video i saw
+    public void StartPathfinding2()
+    {
+        startedPathfinding = true;
+        OpenSet.Clear();
+        ClosedSet.Clear();
+
+        InitStartCosts();
+
+        OpenSet.Add(StartNode);
+
+        while (OpenSet.Count > 0)
+        {
+            GameObject curNode = OpenSet[0];
+
+            // check for any other nodes having smaller cost that this
+            
+            foreach (GameObject g in OpenSet)
+            {
+                if (g.GetComponent<Node>().GetFCost() < curNode.GetComponent<Node>().GetFCost() && g.transform.name!=curNode.transform.name
+                    &&
+                    (g.GetComponent<Node>().hCost < curNode.GetComponent<Node>().hCost))
+                {
+                    curNode = g;
+                }
+
+                //we found closest node to target
+            }
+            
+            OpenSet.Remove(curNode);
+            ClosedSet.Add(curNode);
+            if(curNode.transform.name != StartNode.transform.name && curNode.transform.name!=EndNode.transform.name)
+                curNode.GetComponent<MeshRenderer>().material = YellowMat;
+
+            //check if it is the target node
+
+            if (curNode.transform.name == EndNode.transform.name)
+            {
+                Debug.Log("Found end node.");
+                break;
+            }
+
+            // if not final node, traverse all neighbours
+
+            foreach (GameObject nb in curNode.GetComponent<Node>().neighbours)
+            {
+                if (!ClosedSet.Contains(nb))        // skip closed list neighbours
+                {
+                    // find cost of moving to neighbout
+                    float moveCost = curNode.GetComponent<Node>().gCost + Vector3.Distance(curNode.transform.position, nb.transform.position);
+
+                    //if (moveCost < nb.GetComponent<Node>().GetFCost() || !OpenSet.Contains(nb))
+                    if (moveCost < nb.GetComponent<Node>().gCost || !OpenSet.Contains(nb))
+                    {
+                        nb.GetComponent<Node>().gCost = moveCost;
+                        nb.GetComponent<Node>().hCost = Vector3.Distance(nb.transform.position, endNodePos);
+                        nb.GetComponent<Node>().Parent = curNode;
+
+                        if (!OpenSet.Contains(nb))
                         {
-                            OpenSet.Add(ng);
-                            ng.GetComponent<Node>().CalculateFCost(startNodePos, endNodePos);
-                            ng.GetComponent<Node>().SetParentPath(curNode);
+                            OpenSet.Add(nb);
+                            if(nb.transform.name!=EndNode.transform.name)
+                                nb.GetComponent<MeshRenderer>().material = BlueMat;
                         }
                     }
                 }
-
             }
         }
+        TracePath2();
 
-        if (!pathFound)
-            Debug.Log("Path not found");
     }
 
     void TracePath()
     {
         // we are in the end game now, keep back tracking from end node, going through parents untill you find start node.
         GameObject curNode = EndNode;
+        int count = 0;
         while (curNode.GetComponent<Node>().Parent != null)
         {
-            //Debug.Log(">> "+curNode.transform.name);
+            count++;
             Path.AddFirst(curNode.transform);         
             GameObject Parent= curNode.GetComponent<Node>().Parent;
+
             Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 5f, false);
             distanceCovered += (Vector3.Distance(Parent.transform.position, curNode.transform.position));
             curNode = Parent;
         }
+        
+
         Debug.Log("Distance Covered through this path: "+distanceCovered +"units");
+        Debug.Log("Traced back"+count+" steps");
+    }
+
+    public void TracePath2()
+    {
+        List<Transform> path=new List<Transform>();
+        GameObject curNode = EndNode;
+
+        path.Add(EndNode.transform);
+        while (curNode.GetComponent<Node>().Parent!=null)
+        {
+            path.Add(curNode.GetComponent<Node>().Parent.transform);
+            curNode = curNode.GetComponent<Node>().Parent;
+        }
+
+        path.Reverse();
+
+        // now draw
+        for (int i = 0; i < path.Count-1; i++)
+        {
+            Debug.DrawLine(path[i].position,path[i+1].position,Color.green, 5f, false);
+        }
     }
 
 
@@ -231,12 +388,29 @@ public class Pathfinding : MonoBehaviour
         OpenSet.Clear();
         ClosedSet.Clear();
 
+        Path.Clear();
+
         // clear parent nodes.
         for (int i = 0; i < AllNodesParent.transform.childCount;i++)
         {
             AllNodesParent.transform.GetChild(i).GetComponent<Node>().Parent = null;
+            AllNodesParent.transform.GetChild(i).GetComponent<Node>().ResetMaterial();
+
         }
 
         distanceCovered = 0;
+    }
+
+
+    public void ShowNeighbours()
+    {
+        if (CurrentSelectedNode != null)
+        {
+            foreach (GameObject nb in CurrentSelectedNode.GetComponent<Node>().neighbours)
+            {
+                nb.GetComponent<MeshRenderer>().material = YellowMat;
+                showingNeighbours = true;
+            }
+        }
     }
 }
