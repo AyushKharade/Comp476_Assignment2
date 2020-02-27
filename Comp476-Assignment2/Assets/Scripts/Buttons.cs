@@ -60,4 +60,8 @@ public class Buttons : MonoBehaviour
         StartButtonRef.interactable = true;
     }
 
+    public void ShowNeighbours()
+    {
+        ScriptRef.ShowNeighbours();
+    }
 }

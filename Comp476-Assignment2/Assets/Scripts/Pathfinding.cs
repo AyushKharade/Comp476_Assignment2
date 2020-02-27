@@ -16,6 +16,7 @@ public class Pathfinding : MonoBehaviour
     public Material GreenMat;
     public Material RedMat;
     public Material BlueMat;
+    public Material YellowMat;
 
 
     [Header("Selection Highlight Prefab")]
@@ -37,6 +38,11 @@ public class Pathfinding : MonoBehaviour
 
     float distanceCovered=0;
 
+    // auto turn of highlights while showing neighbours
+
+    bool showingNeighbours;
+    float showingTimer;
+
     void Start()
     {
         OpenSet = new List<GameObject>();
@@ -51,6 +57,22 @@ public class Pathfinding : MonoBehaviour
     {
         if(!startedPathfinding)
             MouseInput();
+
+        if (showingNeighbours)
+        {
+            showingTimer += Time.deltaTime;
+            if (showingTimer > 3f)
+            {
+                showingNeighbours=false;
+                showingTimer = 0;
+
+                int count = AllNodesParent.transform.childCount;
+                for (int i = 0; i < count; i++)
+                {
+                    AllNodesParent.transform.GetChild(i).GetComponent<Node>().ResetMaterial();
+                }
+            }
+        }
     }
 
 
@@ -373,5 +395,18 @@ public class Pathfinding : MonoBehaviour
         }
 
         distanceCovered = 0;
+    }
+
+
+    public void ShowNeighbours()
+    {
+        if (CurrentSelectedNode != null)
+        {
+            foreach (GameObject nb in CurrentSelectedNode.GetComponent<Node>().neighbours)
+            {
+                nb.GetComponent<MeshRenderer>().material = YellowMat;
+                showingNeighbours = true;
+            }
+        }
     }
 }
