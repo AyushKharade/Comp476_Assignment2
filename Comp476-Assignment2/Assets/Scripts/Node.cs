@@ -28,6 +28,8 @@ public class Node : MonoBehaviour
 
     Material defaultMat;
 
+    public GameObject cluster;
+
     void Start()
     {
         defaultMat = GetComponent<MeshRenderer>().material;
