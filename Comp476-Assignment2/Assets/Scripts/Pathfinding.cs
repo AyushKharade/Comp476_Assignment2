@@ -275,22 +275,23 @@ public class Pathfinding : MonoBehaviour
             GameObject curNode = OpenSet[0];
 
             // check for any other nodes having smaller cost that this
-            /*
+            
             foreach (GameObject g in OpenSet)
             {
-                if (g.GetComponent<Node>().GetFCost() < curNode.GetComponent<Node>().GetFCost() && g.transform.name!=curNode.transform.name)
-                    //&&
-                    //(g.GetComponent<Node>().hCost < curNode.GetComponent<Node>().hCost)
+                if (g.GetComponent<Node>().GetFCost() < curNode.GetComponent<Node>().GetFCost() && g.transform.name!=curNode.transform.name
+                    &&
+                    (g.GetComponent<Node>().hCost < curNode.GetComponent<Node>().hCost))
                 {
                     curNode = g;
                 }
 
                 //we found closest node to target
             }
-            */
+            
             OpenSet.Remove(curNode);
             ClosedSet.Add(curNode);
-            curNode.GetComponent<MeshRenderer>().material = RedMat;
+            if(curNode.transform.name != StartNode.transform.name && curNode.transform.name!=EndNode.transform.name)
+                curNode.GetComponent<MeshRenderer>().material = YellowMat;
 
             //check if it is the target node
 
@@ -309,7 +310,8 @@ public class Pathfinding : MonoBehaviour
                     // find cost of moving to neighbout
                     float moveCost = curNode.GetComponent<Node>().gCost + Vector3.Distance(curNode.transform.position, nb.transform.position);
 
-                    if (moveCost < nb.GetComponent<Node>().GetFCost() || !OpenSet.Contains(nb))
+                    //if (moveCost < nb.GetComponent<Node>().GetFCost() || !OpenSet.Contains(nb))
+                    if (moveCost < nb.GetComponent<Node>().gCost || !OpenSet.Contains(nb))
                     {
                         nb.GetComponent<Node>().gCost = moveCost;
                         nb.GetComponent<Node>().hCost = Vector3.Distance(nb.transform.position, endNodePos);
@@ -318,6 +320,8 @@ public class Pathfinding : MonoBehaviour
                         if (!OpenSet.Contains(nb))
                         {
                             OpenSet.Add(nb);
+                            if(nb.transform.name!=EndNode.transform.name)
+                                nb.GetComponent<MeshRenderer>().material = BlueMat;
                         }
                     }
                 }
