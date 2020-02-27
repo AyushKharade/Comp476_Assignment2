@@ -558,6 +558,7 @@ MonoBehaviour:
   - {fileID: 888118951}
   - {fileID: 324478900}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &117797759
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -674,6 +675,7 @@ MonoBehaviour:
   - {fileID: 1122491377}
   - {fileID: 253681258}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &157591844
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -733,6 +735,8 @@ GameObject:
   - component: {fileID: 166882165}
   - component: {fileID: 166882164}
   - component: {fileID: 166882163}
+  - component: {fileID: 166882168}
+  - component: {fileID: 166882167}
   m_Layer: 0
   m_Name: R1Cluster
   m_TagString: Untagged
@@ -752,7 +756,7 @@ Transform:
   m_LocalScale: {x: 1.645, y: 1.645, z: 1.645}
   m_Children: []
   m_Father: {fileID: 1664991565}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &166882163
 MonoBehaviour:
@@ -767,7 +771,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clusterName: 
-  clusterElements: []
   clusterExits: []
 --- !u!135 &166882164
 SphereCollider:
@@ -777,7 +780,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 166882161}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -791,7 +794,7 @@ MeshRenderer:
   m_GameObject: {fileID: 166882161}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -828,6 +831,43 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 166882161}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &166882167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166882161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
+  fCost: 0
+  isFinalNode: 0
+  isInitialNode: 0
+  neighbours:
+  - {fileID: 1349798718}
+  - {fileID: 542560554}
+  Parent: {fileID: 0}
+  cluster: {fileID: 0}
+--- !u!114 &166882168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166882161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cca12de749b6e4f8f9a0588ce21081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clusterName: 
+  clusterExits: []
 --- !u!1 &167427636
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,6 +1018,7 @@ MonoBehaviour:
   - {fileID: 812325788}
   - {fileID: 1300650052}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &208187865
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1096,6 +1137,7 @@ MonoBehaviour:
   - {fileID: 812325788}
   - {fileID: 958838662}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &210326111
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1211,6 +1253,7 @@ MonoBehaviour:
   - {fileID: 451690705}
   - {fileID: 1790203587}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &243070808
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1327,6 +1370,7 @@ MonoBehaviour:
   - {fileID: 157591840}
   - {fileID: 1122491377}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &253681262
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1442,6 +1486,7 @@ MonoBehaviour:
   - {fileID: 2118317612}
   - {fileID: 888118951}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &257851319
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1559,6 +1604,7 @@ MonoBehaviour:
   - {fileID: 421646712}
   - {fileID: 2140174879}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &285579630
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1675,6 +1721,7 @@ MonoBehaviour:
   - {fileID: 117797755}
   - {fileID: 333837203}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &324478904
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1790,6 +1837,7 @@ MonoBehaviour:
   - {fileID: 1606871706}
   - {fileID: 324478900}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &333837207
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2038,6 +2086,7 @@ MonoBehaviour:
   - {fileID: 2010008095}
   - {fileID: 712258205}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &411316067
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2154,6 +2203,7 @@ MonoBehaviour:
   - {fileID: 1198385525}
   - {fileID: 2140174879}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &421646716
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2270,6 +2320,7 @@ MonoBehaviour:
   - {fileID: 243070804}
   - {fileID: 536944530}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &451690709
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2441,6 +2492,7 @@ MonoBehaviour:
   - {fileID: 253681258}
   - {fileID: 451690705}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &536944534
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2500,6 +2552,8 @@ GameObject:
   - component: {fileID: 542560558}
   - component: {fileID: 542560557}
   - component: {fileID: 542560556}
+  - component: {fileID: 542560561}
+  - component: {fileID: 542560560}
   m_Layer: 0
   m_Name: C3Cluster
   m_TagString: Untagged
@@ -2534,7 +2588,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clusterName: 
-  clusterElements: []
   clusterExits: []
 --- !u!135 &542560557
 SphereCollider:
@@ -2544,7 +2597,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542560554}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -2558,7 +2611,7 @@ MeshRenderer:
   m_GameObject: {fileID: 542560554}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -2595,6 +2648,43 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542560554}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &542560560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542560554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
+  fCost: 0
+  isFinalNode: 0
+  isInitialNode: 0
+  neighbours:
+  - {fileID: 166882161}
+  - {fileID: 1431581300}
+  Parent: {fileID: 0}
+  cluster: {fileID: 0}
+--- !u!114 &542560561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542560554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cca12de749b6e4f8f9a0588ce21081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clusterName: 
+  clusterExits: []
 --- !u!1 &562781032
 GameObject:
   m_ObjectHideFlags: 0
@@ -3019,6 +3109,7 @@ MonoBehaviour:
   - {fileID: 712258205}
   - {fileID: 2118317612}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &636924660
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3133,6 +3224,7 @@ MonoBehaviour:
   neighbours:
   - {fileID: 451690705}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &663271184
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3249,6 +3341,7 @@ MonoBehaviour:
   - {fileID: 1030670741}
   - {fileID: 2130890499}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &672272027
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3445,6 +3538,7 @@ MonoBehaviour:
   - {fileID: 952929852}
   - {fileID: 210326107}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &705094895
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3652,6 +3746,7 @@ MonoBehaviour:
   - {fileID: 636924656}
   - {fileID: 935413683}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &712258209
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3769,6 +3864,7 @@ MonoBehaviour:
   - {fileID: 1799953656}
   - {fileID: 285579626}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &716809987
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4098,6 +4194,7 @@ MonoBehaviour:
   - {fileID: 208187861}
   - {fileID: 1300650052}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &812325792
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4478,6 +4575,7 @@ MonoBehaviour:
   - {fileID: 1094502243}
   - {fileID: 257851315}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &888118955
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4592,6 +4690,7 @@ MonoBehaviour:
   neighbours:
   - {fileID: 2073030247}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &898778228
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4707,6 +4806,7 @@ MonoBehaviour:
   - {fileID: 1171681035}
   - {fileID: 1824926057}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &907066017
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4822,6 +4922,7 @@ MonoBehaviour:
   - {fileID: 712258205}
   - {fileID: 2118317612}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &935413687
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5019,6 +5120,7 @@ MonoBehaviour:
   - {fileID: 208187861}
   - {fileID: 2010008095}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &952929856
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5136,6 +5238,7 @@ MonoBehaviour:
   - {fileID: 989103812}
   - {fileID: 1954135571}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &958838666
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5334,6 +5437,7 @@ MonoBehaviour:
   - {fileID: 958838662}
   - {fileID: 1954135571}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &989103816
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5448,6 +5552,7 @@ MonoBehaviour:
   neighbours:
   - {fileID: 672272023}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1030670745
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5639,6 +5744,7 @@ MonoBehaviour:
   - {fileID: 672272023}
   - {fileID: 888118951}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1094502247
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5849,6 +5955,7 @@ MonoBehaviour:
   - {fileID: 716809983}
   - {fileID: 1905676856}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1122491381
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5964,6 +6071,7 @@ MonoBehaviour:
   - {fileID: 2118317612}
   - {fileID: 907066013}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1171681039
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6213,6 +6321,7 @@ MonoBehaviour:
   - {fileID: 421646712}
   - {fileID: 2140174879}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1198385529
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6328,6 +6437,7 @@ MonoBehaviour:
   - {fileID: 1122491377}
   - {fileID: 536944530}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1203977729
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6523,6 +6633,7 @@ MonoBehaviour:
   - {fileID: 812325788}
   - {fileID: 1911754984}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1300650056
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6582,6 +6693,8 @@ GameObject:
   - component: {fileID: 1349798722}
   - component: {fileID: 1349798721}
   - component: {fileID: 1349798720}
+  - component: {fileID: 1349798725}
+  - component: {fileID: 1349798724}
   m_Layer: 0
   m_Name: C1Cluster
   m_TagString: Untagged
@@ -6616,7 +6729,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clusterName: 
-  clusterElements: []
   clusterExits: []
 --- !u!135 &1349798721
 SphereCollider:
@@ -6626,7 +6738,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1349798718}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -6640,7 +6752,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1349798718}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -6677,6 +6789,44 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1349798718}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1349798724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349798718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
+  fCost: 0
+  isFinalNode: 0
+  isInitialNode: 0
+  neighbours:
+  - {fileID: 166882161}
+  - {fileID: 1390020051}
+  - {fileID: 1605063110}
+  Parent: {fileID: 0}
+  cluster: {fileID: 0}
+--- !u!114 &1349798725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349798718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cca12de749b6e4f8f9a0588ce21081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clusterName: 
+  clusterExits: []
 --- !u!1 &1367575053
 GameObject:
   m_ObjectHideFlags: 0
@@ -6746,6 +6896,7 @@ MonoBehaviour:
   - {fileID: 2118317612}
   - {fileID: 2139402450}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1367575057
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6805,6 +6956,8 @@ GameObject:
   - component: {fileID: 1390020055}
   - component: {fileID: 1390020054}
   - component: {fileID: 1390020053}
+  - component: {fileID: 1390020058}
+  - component: {fileID: 1390020057}
   m_Layer: 0
   m_Name: R2Cluster
   m_TagString: Untagged
@@ -6824,7 +6977,7 @@ Transform:
   m_LocalScale: {x: 1.645, y: 1.645, z: 1.645}
   m_Children: []
   m_Father: {fileID: 1664991565}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1390020053
 MonoBehaviour:
@@ -6839,7 +6992,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clusterName: 
-  clusterElements: []
   clusterExits: []
 --- !u!135 &1390020054
 SphereCollider:
@@ -6849,7 +7001,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1390020051}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -6863,7 +7015,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1390020051}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -6900,6 +7052,43 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1390020051}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1390020057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390020051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
+  fCost: 0
+  isFinalNode: 0
+  isInitialNode: 0
+  neighbours:
+  - {fileID: 1349798718}
+  - {fileID: 1605063110}
+  Parent: {fileID: 0}
+  cluster: {fileID: 0}
+--- !u!114 &1390020058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390020051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cca12de749b6e4f8f9a0588ce21081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clusterName: 
+  clusterExits: []
 --- !u!1 &1431581300
 GameObject:
   m_ObjectHideFlags: 0
@@ -6913,6 +7102,8 @@ GameObject:
   - component: {fileID: 1431581304}
   - component: {fileID: 1431581303}
   - component: {fileID: 1431581302}
+  - component: {fileID: 1431581307}
+  - component: {fileID: 1431581306}
   m_Layer: 0
   m_Name: R3Cluster
   m_TagString: Untagged
@@ -6932,7 +7123,7 @@ Transform:
   m_LocalScale: {x: 1.645, y: 1.645, z: 1.645}
   m_Children: []
   m_Father: {fileID: 1664991565}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1431581302
 MonoBehaviour:
@@ -6947,7 +7138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clusterName: 
-  clusterElements: []
   clusterExits: []
 --- !u!135 &1431581303
 SphereCollider:
@@ -6957,7 +7147,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431581300}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -6971,7 +7161,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1431581300}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -7008,6 +7198,43 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431581300}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1431581306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431581300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
+  fCost: 0
+  isFinalNode: 0
+  isInitialNode: 0
+  neighbours:
+  - {fileID: 1605063110}
+  - {fileID: 542560554}
+  Parent: {fileID: 0}
+  cluster: {fileID: 0}
+--- !u!114 &1431581307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431581300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cca12de749b6e4f8f9a0588ce21081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clusterName: 
+  clusterExits: []
 --- !u!1 &1473552702
 GameObject:
   m_ObjectHideFlags: 0
@@ -7210,6 +7437,7 @@ MonoBehaviour:
   - {fileID: 117797755}
   - {fileID: 2073030247}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1524171603
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7269,6 +7497,8 @@ GameObject:
   - component: {fileID: 1605063114}
   - component: {fileID: 1605063113}
   - component: {fileID: 1605063112}
+  - component: {fileID: 1605063117}
+  - component: {fileID: 1605063116}
   m_Layer: 0
   m_Name: C2Cluster
   m_TagString: Untagged
@@ -7303,7 +7533,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clusterName: 
-  clusterElements: []
   clusterExits: []
 --- !u!135 &1605063113
 SphereCollider:
@@ -7313,7 +7542,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1605063110}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -7327,7 +7556,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1605063110}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -7364,6 +7593,44 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1605063110}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1605063116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605063110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd10cd648ce2741ba85ced5d44a8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  gCost: 0
+  hCost: 0
+  fCost: 0
+  isFinalNode: 0
+  isInitialNode: 0
+  neighbours:
+  - {fileID: 1390020051}
+  - {fileID: 1349798718}
+  - {fileID: 1431581300}
+  Parent: {fileID: 0}
+  cluster: {fileID: 0}
+--- !u!114 &1605063117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605063110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cca12de749b6e4f8f9a0588ce21081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clusterName: 
+  clusterExits: []
 --- !u!1 &1606871706
 GameObject:
   m_ObjectHideFlags: 0
@@ -7434,6 +7701,7 @@ MonoBehaviour:
   - {fileID: 333837203}
   - {fileID: 1911754984}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1606871710
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7586,9 +7854,9 @@ Transform:
   m_LocalPosition: {x: 0.505146, y: -2.7567916, z: -0.34956175}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 166882162}
   - {fileID: 1390020052}
   - {fileID: 1431581301}
-  - {fileID: 166882162}
   - {fileID: 1349798719}
   - {fileID: 1605063111}
   - {fileID: 542560555}
@@ -7877,6 +8145,7 @@ MonoBehaviour:
   - {fileID: 243070804}
   - {fileID: 1606871706}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1790203591
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7992,6 +8261,7 @@ MonoBehaviour:
   - {fileID: 716809983}
   - {fileID: 1905676856}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1799953660
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8198,6 +8468,7 @@ MonoBehaviour:
   neighbours:
   - {fileID: 907066013}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1824926061
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8314,6 +8585,7 @@ MonoBehaviour:
   - {fileID: 1799953656}
   - {fileID: 1122491377}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1905676860
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8430,6 +8702,7 @@ MonoBehaviour:
   - {fileID: 958838662}
   - {fileID: 1606871706}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1911754988
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8716,6 +8989,7 @@ MonoBehaviour:
   - {fileID: 989103812}
   - {fileID: 958838662}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &1954135575
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8832,6 +9106,7 @@ MonoBehaviour:
   - {fileID: 324478900}
   - {fileID: 952929852}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &2010008099
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9344,6 +9619,7 @@ MonoBehaviour:
   - {fileID: 1524171599}
   - {fileID: 898778224}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &2073030251
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9462,6 +9738,7 @@ MonoBehaviour:
   - {fileID: 1171681035}
   - {fileID: 1367575053}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &2118317616
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9578,6 +9855,7 @@ MonoBehaviour:
   - {fileID: 1122491377}
   - {fileID: 672272023}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &2130890503
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9784,6 +10062,7 @@ MonoBehaviour:
   neighbours:
   - {fileID: 1367575053}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &2139402454
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9900,6 +10179,7 @@ MonoBehaviour:
   - {fileID: 1198385525}
   - {fileID: 421646712}
   Parent: {fileID: 0}
+  cluster: {fileID: 0}
 --- !u!23 &2140174883
 MeshRenderer:
   m_ObjectHideFlags: 0
