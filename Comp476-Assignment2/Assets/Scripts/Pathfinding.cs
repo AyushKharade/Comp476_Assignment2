@@ -329,13 +329,34 @@ public class Pathfinding : MonoBehaviour
         }
         else
         {
-            StartNode = clusterStart;
-            EndNode = clusterEnd;
-            StartPathfindingRegular();
+            //StartNode = clusterStart;
+            //EndNode = clusterEnd;
+            //StartPathfindingRegular();
             Debug.Log("Path among different clusters.");
 
             // store path of clusters
             List<Transform> clusterPath = StartPathfindingRegular(clusterStart,clusterEnd);
+            int clusterCount = clusterPath.Count;
+
+            // we now have what clusters we need to traverse through.
+            // we choose whichever exit's hcost is smaller or gcost, or fcost, which ever has best pathfinding.
+
+            // path is --> startNode --> shortest exit of current cluster (gcost)
+            //             --> enter next cluster through exit with lowest gcost
+            //              --> enter final cluster through exit with lowest hcost
+
+            List<Transform>[] totalClusterPath = new List<Transform>[clusterCount];
+
+            int index=0;
+            foreach (List<Transform> LT in totalClusterPath)
+            {
+                // find closest exit of path[index].
+
+
+
+
+                index++;
+            }
 
         }
     }
