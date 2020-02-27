@@ -13,10 +13,11 @@ public class Node : MonoBehaviour
 
 
     // variables
-    [HideInInspector]public Vector3 position;
+    [HideInInspector] public Vector3 position;
     public float gCost;
     public float hCost;
-    
+    public float fCost;
+
 
     public bool isFinalNode;
     public bool isInitialNode;
@@ -33,14 +34,19 @@ public class Node : MonoBehaviour
         position = transform.position;
         // check if has atleast one neighbour
         if (neighbours.Count == 0)
-            Debug.Log(transform.name+" has 0 NEIGHBOURS");
+            Debug.Log(transform.name + " has 0 NEIGHBOURS");
 
         Parent = null;
     }
 
+    public void SumFCost()
+    {
+        fCost = gCost + hCost;
+    }
 
     public float GetFCost()
     {
+        SumFCost();
         return gCost + hCost;
     }
 
@@ -48,6 +54,8 @@ public class Node : MonoBehaviour
     {
         gCost = Vector3.Distance(start, transform.position);
         hCost = Vector3.Distance(end, transform.position);
+
+        SumFCost();
     }
 
     public void SetParentPath(GameObject g)
