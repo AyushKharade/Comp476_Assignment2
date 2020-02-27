@@ -25,7 +25,7 @@ public class Buttons : MonoBehaviour
         //Debug.Log("Started Pathfinding.");
         if (ScriptRef.StartNode != null && ScriptRef.EndNode != null)
         {
-            ScriptRef.StartPathfinding2();
+            ScriptRef.Pathfind();
             StartButtonRef.interactable = false;
             ResetButtonRef.interactable = true;
         }

@@ -43,6 +43,9 @@ public class Pathfinding : MonoBehaviour
     bool showingNeighbours;
     float showingTimer;
 
+    [Header("Heuristics")]
+    public bool clusterHeuristic;     // if enable, call a seperate function
+
     void Start()
     {
         OpenSet = new List<GameObject>();
@@ -110,16 +113,7 @@ public class Pathfinding : MonoBehaviour
             }
         }
     }
-    /*
-     * Algorithm
-     * 
-     * Add current node to open list
-     * 
-     * Loop:
-     * Pick currentNode from openList with the lowest fcost.
-     * remove currentNode from Open and add to closed
-     * 
-     */
+    
 
     public void SetStartNode()
     {
@@ -161,106 +155,24 @@ public class Pathfinding : MonoBehaviour
         currentSelectedText.GetComponent<Text>().text = "None";
     }
 
-    
+
     //-------------------------------------------------------------------------------------------------------------------
 
-
-    public void StartPathfinding()
+    public void Pathfind()
     {
-        // start node and end node are already set.
-        startedPathfinding = true;
-        bool pathfound = false;
-
-        OpenSet.Clear();
-        ClosedSet.Clear();
-
-        InitStartCosts();
-
-        // clear costs
-        OpenSet.Add(StartNode);
-
-        while (OpenSet.Count > 0)
+        if (clusterHeuristic)
         {
-            // find node with smallest fcost
-            GameObject curNode = null;
-            float leastCost = float.MaxValue;
-
-            foreach (GameObject n in OpenSet)
-            {
-                n.GetComponent<Node>().CalculateFCost(startNodePos,endNodePos);
-                if (n.GetComponent<Node>().GetFCost() < leastCost)
-                {
-                    curNode = n;
-                    leastCost = n.GetComponent<Node>().GetFCost();
-                }
-            }
-
-            Debug.Log("New curNode selected is "+curNode.transform.name +"with fcost"+ curNode.GetComponent<Node>().GetFCost());
-
-            // remove curNode from open, add to closed.
-            OpenSet.Remove(curNode);
-            ClosedSet.Add(curNode);
-            curNode.GetComponent<MeshRenderer>().material = RedMat;
-
-            //if (Vector3.Distance(curNode.transform.position,endNodePos) == 0)
-            if(curNode.transform.name == EndNode.transform.name)
-            {
-                Debug.Log("Path Found");
-                pathfound = true;
-                TracePath();
-                break;
-            }
-
-
-            // traverse all neighbours
-            foreach (GameObject ng in curNode.GetComponent<Node>().neighbours)
-            {
-                if (ClosedSet.Contains(ng))
-                {
-                    continue;
-                }
-                
-
-                float newNeighbourCost = curNode.GetComponent<Node>().gCost;
-                newNeighbourCost += Vector3.Distance(curNode.transform.position, ng.transform.position);
-
-                if (newNeighbourCost < ng.GetComponent<Node>().gCost || !OpenSet.Contains(ng))
-                {
-
-                    // if cost between current node is smaller, update costs
-                    if (newNeighbourCost < ng.GetComponent<Node>().gCost)
-                    {
-                        ng.GetComponent<Node>().gCost = newNeighbourCost;
-                        ng.GetComponent<Node>().hCost = Vector3.Distance(ng.transform.position, endNodePos);
-                        ng.GetComponent<Node>().Parent = curNode;
-
-                    }
-                    //ng.GetComponent<Node>().Parent = curNode;
-
-                    if (!OpenSet.Contains(ng))
-                    {
-                        OpenSet.Add(ng);
-                        if(ng.GetComponent<Node>().Parent==null)
-                            ng.GetComponent<Node>().Parent = curNode;
-
-                    }
-                }
-            }
-
+            StartPathfindingCluster();
         }
-
-        //TracePath();
-
-        if (!pathfound)
-            Debug.Log("Didnt find path");
-
-
-        
+        else
+        {
+            StartPathfindingRegular();
+        }
     }
 
 
     // second video i saw
-    public void StartPathfinding2()
+    void StartPathfindingRegular()
     {
         startedPathfinding = true;
         OpenSet.Clear();
@@ -330,6 +242,15 @@ public class Pathfinding : MonoBehaviour
         TracePath2();
 
     }
+
+
+    // cluster heuristics:
+    void StartPathfindingCluster()
+    {
+        Debug.Log("You have chosen cluster heuristic");
+    }
+
+
 
     void TracePath()
     {
