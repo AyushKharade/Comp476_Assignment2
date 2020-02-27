@@ -37,7 +37,6 @@ public class Pathfinding : MonoBehaviour
 
     LinkedList<Transform> Path = new LinkedList<Transform>();       // NPC Follows this path.
 
-    float distanceCovered=0;
 
     // auto turn of highlights while showing neighbours
 
@@ -167,76 +166,17 @@ public class Pathfinding : MonoBehaviour
         }
         else
         {
-            StartPathfindingRegular();
+            List<Transform> lst=StartPathfindingRegular(StartNode,EndNode);
+            DrawPath(lst);
         }
     }
 
 
-    // second video i saw
-    void StartPathfindingRegular()
-    {
-        startedPathfinding = true;
-        OpenSet.Clear();
-        ClosedSet.Clear();
-        InitStartCosts();
-        OpenSet.Add(StartNode);
-
-        while (OpenSet.Count > 0)
-        {
-            GameObject curNode = OpenSet[0];
-            // check for any other nodes having smaller cost that this
-            foreach (GameObject g in OpenSet)
-            {
-                if (g.GetComponent<Node>().GetFCost() < curNode.GetComponent<Node>().GetFCost() && g.transform.name!=curNode.transform.name
-                    &&
-                    (g.GetComponent<Node>().hCost < curNode.GetComponent<Node>().hCost))
-                {
-                    curNode = g;
-                }
-            }
-            
-            OpenSet.Remove(curNode);
-            ClosedSet.Add(curNode);
-            if(curNode.transform.name != StartNode.transform.name && curNode.transform.name!=EndNode.transform.name)
-                curNode.GetComponent<MeshRenderer>().material = YellowMat;
-
-            //check if it is the target node
-            if (curNode.transform.name == EndNode.transform.name)
-            {
-                Debug.Log("Found end node.");
-                break;
-            }
-            // if not final node, traverse all neighbours
-            foreach (GameObject nb in curNode.GetComponent<Node>().neighbours)
-            {
-                if (!ClosedSet.Contains(nb))        // skip closed list neighbours
-                {
-                    // find cost of moving to neighbout
-                    float moveCost = curNode.GetComponent<Node>().gCost + Vector3.Distance(curNode.transform.position, nb.transform.position);
-
-                    //if (moveCost < nb.GetComponent<Node>().GetFCost() || !OpenSet.Contains(nb))
-                    if (moveCost < nb.GetComponent<Node>().gCost || !OpenSet.Contains(nb))
-                    {
-                        nb.GetComponent<Node>().gCost = moveCost;
-                        nb.GetComponent<Node>().hCost = Vector3.Distance(nb.transform.position, endNodePos);
-                        nb.GetComponent<Node>().Parent = curNode;
-
-                        if (!OpenSet.Contains(nb))
-                        {
-                            OpenSet.Add(nb);
-                            if(nb.transform.name!=EndNode.transform.name)
-                                nb.GetComponent<MeshRenderer>().material = BlueMat;
-                        }
-                    }
-                }
-            }
-        }
-        TracePath2();
-
-    }
+    
 
 
-    // overloaded method to return a list of path
+    // Pathfinding Function:
+    // Returns a list of path transforms from Start node to end node
     List<Transform> StartPathfindingRegular(GameObject start, GameObject end)
     {
         List<Transform> pathList = new List<Transform>();
@@ -272,12 +212,13 @@ public class Pathfinding : MonoBehaviour
                 //Debug.Log("Found end node.");
                 break;
             }
+
             // if not final node, traverse all neighbours
             foreach (GameObject nb in curNode.GetComponent<Node>().neighbours)
             {
                 if (!ClosedSet.Contains(nb))        // skip closed list neighbours
                 {
-                    // find cost of moving to neighbout
+                    // find cost of moving to neighbour
                     float moveCost = curNode.GetComponent<Node>().gCost + Vector3.Distance(curNode.transform.position, nb.transform.position);
 
                     //if (moveCost < nb.GetComponent<Node>().GetFCost() || !OpenSet.Contains(nb))
@@ -290,7 +231,7 @@ public class Pathfinding : MonoBehaviour
                         if (!OpenSet.Contains(nb))
                         {
                             OpenSet.Add(nb);
-                            if (nb.transform.name != end.transform.name)
+                            if (nb.transform.name != end.transform.name && nb.GetComponent<MeshRenderer>().material!=YellowMat)
                                 nb.GetComponent<MeshRenderer>().material = BlueMat;
                         }
                     }
@@ -298,7 +239,7 @@ public class Pathfinding : MonoBehaviour
             }
         }
 
-
+        // create path by back tracking from end node to start node.
         // add the path in list
         GameObject currNode = end;
 
@@ -322,6 +263,7 @@ public class Pathfinding : MonoBehaviour
         // check if start node and end nodes are both in the same cluster, if so, do regular path finding.
         GameObject clusterStart = StartNode.GetComponent<Node>().cluster;
         GameObject clusterEnd = EndNode.GetComponent<Node>().cluster;
+
         if (clusterStart.transform.name == clusterEnd.transform.name)
         {
             //StartPathfindingRegular();
@@ -332,15 +274,13 @@ public class Pathfinding : MonoBehaviour
         }
         else
         {
-            //StartNode = clusterStart;
-            //EndNode = clusterEnd;
-            //StartPathfindingRegular();
+            
             Debug.Log("Path among different clusters.\nStarting cluster: " + clusterStart.transform.name + ", Ending Cluster: " + clusterEnd.transform.name);
-
+        
 
             // store path of clusters
             List<Transform> clusterPath = StartPathfindingRegular(clusterStart, clusterEnd);
-            int clusterCount = clusterPath.Count;
+            //DrawPath(clusterPath);
 
             /*
             foreach (Transform t in clusterPath)
@@ -348,6 +288,7 @@ public class Pathfinding : MonoBehaviour
                 Debug.Log(">> "+t.name);
             }
             */
+
             // we now have list of clusters we need to traverse through.
 
             List<GameObject> traverseThroughNodes = new List<GameObject>();
@@ -362,11 +303,13 @@ public class Pathfinding : MonoBehaviour
 
             
             Debug.Log("Nodes we need to get through: ");
+            string pathStr="";
             foreach (GameObject gb in traverseThroughNodes)
             {
-                Debug.Log(">> "+gb.transform.name);
+                pathStr += ">> " + gb.transform.name;
             }
-            
+                Debug.Log(">> "+pathStr);
+
 
             // we have all the nodes we need to traverse through, draw these
             for (int i=0; i< (traverseThroughNodes.Count - 1); i++)
@@ -380,14 +323,14 @@ public class Pathfinding : MonoBehaviour
     }
 
 
-
+    // function not used
     public void TracePath2()
     {
-        List<Transform> path=new List<Transform>();
+        List<Transform> path = new List<Transform>();
         GameObject curNode = EndNode;
 
         path.Add(EndNode.transform);
-        while (curNode.GetComponent<Node>().Parent!=null)
+        while (curNode.GetComponent<Node>().Parent != null)
         {
             path.Add(curNode.GetComponent<Node>().Parent.transform);
             curNode = curNode.GetComponent<Node>().Parent;
@@ -438,7 +381,6 @@ public class Pathfinding : MonoBehaviour
 
 
 
-        distanceCovered = 0;
     }
 
 

@@ -2410,7 +2410,7 @@ MonoBehaviour:
   AllNodesParent: {fileID: 855570047}
   AllClustersParent: {fileID: 1664991564}
   OpenSet: []
-  clusterHeuristic: 1
+  clusterHeuristic: 0
 --- !u!1 &536944530
 GameObject:
   m_ObjectHideFlags: 0
