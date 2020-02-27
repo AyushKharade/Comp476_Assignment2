@@ -269,7 +269,7 @@ public class Pathfinding : MonoBehaviour
             //check if it is the target node
             if (curNode.transform.name == end.transform.name)
             {
-                Debug.Log("Found end node.");
+                //Debug.Log("Found end node.");
                 break;
             }
             // if not final node, traverse all neighbours
@@ -324,8 +324,11 @@ public class Pathfinding : MonoBehaviour
         GameObject clusterEnd = EndNode.GetComponent<Node>().cluster;
         if (clusterStart.transform.name == clusterEnd.transform.name)
         {
-            StartPathfindingRegular();
+            //StartPathfindingRegular();
             Debug.Log("Path within the same cluster");
+            List<Transform> regularPath = new List<Transform>();
+            regularPath = StartPathfindingRegular(StartNode,EndNode);
+            DrawPath(regularPath);
         }
         else
         {
@@ -357,13 +360,13 @@ public class Pathfinding : MonoBehaviour
 
             traverseThroughNodes.Add(EndNode);
 
-            /*
+            
             Debug.Log("Nodes we need to get through: ");
             foreach (GameObject gb in traverseThroughNodes)
             {
                 Debug.Log(">> "+gb.transform.name);
             }
-            */
+            
 
             // we have all the nodes we need to traverse through, draw these
             for (int i=0; i< (traverseThroughNodes.Count - 1); i++)
@@ -377,27 +380,6 @@ public class Pathfinding : MonoBehaviour
     }
 
 
-
-    void TracePath()
-    {
-        // we are in the end game now, keep back tracking from end node, going through parents untill you find start node.
-        GameObject curNode = EndNode;
-        int count = 0;
-        while (curNode.GetComponent<Node>().Parent != null)
-        {
-            count++;
-            Path.AddFirst(curNode.transform);         
-            GameObject Parent= curNode.GetComponent<Node>().Parent;
-
-            Debug.DrawLine(curNode.transform.position, Parent.transform.position, Color.green, 5f, false);
-            distanceCovered += (Vector3.Distance(Parent.transform.position, curNode.transform.position));
-            curNode = Parent;
-        }
-        
-
-        Debug.Log("Distance Covered through this path: "+distanceCovered +"units");
-        Debug.Log("Traced back"+count+" steps");
-    }
 
     public void TracePath2()
     {
@@ -414,10 +396,7 @@ public class Pathfinding : MonoBehaviour
         path.Reverse();
 
         // now draw
-        for (int i = 0; i < path.Count-1; i++)
-        {
-            Debug.DrawLine(path[i].position,path[i+1].position,Color.green, 5f, false);
-        }
+        DrawPath(path);
     }
 
     void DrawPath(List<Transform> lst)
