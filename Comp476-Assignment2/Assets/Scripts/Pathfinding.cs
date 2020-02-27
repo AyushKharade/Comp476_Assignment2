@@ -332,11 +332,11 @@ public class Pathfinding : MonoBehaviour
             //StartNode = clusterStart;
             //EndNode = clusterEnd;
             //StartPathfindingRegular();
-            Debug.Log("Path among different clusters.\nStarting cluster: "+clusterStart.transform.name+", Ending Cluster: "+clusterEnd.transform.name);
+            Debug.Log("Path among different clusters.\nStarting cluster: " + clusterStart.transform.name + ", Ending Cluster: " + clusterEnd.transform.name);
 
-            
+
             // store path of clusters
-            List<Transform> clusterPath = StartPathfindingRegular(clusterStart,clusterEnd);
+            List<Transform> clusterPath = StartPathfindingRegular(clusterStart, clusterEnd);
             int clusterCount = clusterPath.Count;
 
             /*
@@ -352,17 +352,26 @@ public class Pathfinding : MonoBehaviour
             // loop
             foreach (Transform T in clusterPath)
             {
-                traverseThroughNodes.Add(T.GetComponent<Cluster>().GetFastestExit(StartNode.transform.position,EndNode.transform.position));
+                traverseThroughNodes.Add(T.GetComponent<Cluster>().GetFastestExit(StartNode.transform.position, EndNode.transform.position));
             }
 
             traverseThroughNodes.Add(EndNode);
 
+            /*
             Debug.Log("Nodes we need to get through: ");
             foreach (GameObject gb in traverseThroughNodes)
             {
                 Debug.Log(">> "+gb.transform.name);
             }
-            
+            */
+
+            // we have all the nodes we need to traverse through, draw these
+            for (int i=0; i< (traverseThroughNodes.Count - 1); i++)
+            {
+                List<Transform> temp = StartPathfindingRegular(traverseThroughNodes[i],traverseThroughNodes[i+1]);
+                DrawPath(temp);
+            }
+
 
         }
     }
@@ -408,6 +417,14 @@ public class Pathfinding : MonoBehaviour
         for (int i = 0; i < path.Count-1; i++)
         {
             Debug.DrawLine(path[i].position,path[i+1].position,Color.green, 5f, false);
+        }
+    }
+
+    void DrawPath(List<Transform> lst)
+    {
+        for (int i = 0; i < lst.Count - 1; i++)
+        {
+            Debug.DrawLine(lst[i].position, lst[i + 1].position, Color.green, 5f, false);
         }
     }
 
