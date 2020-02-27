@@ -27,6 +27,7 @@ public class Pathfinding : MonoBehaviour
     GameObject selectedHighlight;
 
     public GameObject AllNodesParent;
+    public GameObject AllClustersParent;
 
 
     bool startedPathfinding;
@@ -177,17 +178,13 @@ public class Pathfinding : MonoBehaviour
         startedPathfinding = true;
         OpenSet.Clear();
         ClosedSet.Clear();
-
         InitStartCosts();
-
         OpenSet.Add(StartNode);
 
         while (OpenSet.Count > 0)
         {
             GameObject curNode = OpenSet[0];
-
             // check for any other nodes having smaller cost that this
-            
             foreach (GameObject g in OpenSet)
             {
                 if (g.GetComponent<Node>().GetFCost() < curNode.GetComponent<Node>().GetFCost() && g.transform.name!=curNode.transform.name
@@ -196,8 +193,6 @@ public class Pathfinding : MonoBehaviour
                 {
                     curNode = g;
                 }
-
-                //we found closest node to target
             }
             
             OpenSet.Remove(curNode);
@@ -206,15 +201,12 @@ public class Pathfinding : MonoBehaviour
                 curNode.GetComponent<MeshRenderer>().material = YellowMat;
 
             //check if it is the target node
-
             if (curNode.transform.name == EndNode.transform.name)
             {
                 Debug.Log("Found end node.");
                 break;
             }
-
             // if not final node, traverse all neighbours
-
             foreach (GameObject nb in curNode.GetComponent<Node>().neighbours)
             {
                 if (!ClosedSet.Contains(nb))        // skip closed list neighbours
@@ -244,10 +236,108 @@ public class Pathfinding : MonoBehaviour
     }
 
 
+    // overloaded method to return a list of path
+    List<Transform> StartPathfindingRegular(GameObject start, GameObject end)
+    {
+        List<Transform> pathList = new List<Transform>();
+
+        startedPathfinding = true;
+        OpenSet.Clear();
+        ClosedSet.Clear();
+        InitStartCosts();
+        OpenSet.Add(start);
+
+        while (OpenSet.Count > 0)
+        {
+            GameObject curNode = OpenSet[0];
+            // check for any other nodes having smaller cost that this
+            foreach (GameObject g in OpenSet)
+            {
+                if (g.GetComponent<Node>().GetFCost() < curNode.GetComponent<Node>().GetFCost() && g.transform.name != curNode.transform.name
+                    &&
+                    (g.GetComponent<Node>().hCost < curNode.GetComponent<Node>().hCost))
+                {
+                    curNode = g;
+                }
+            }
+
+            OpenSet.Remove(curNode);
+            ClosedSet.Add(curNode);
+            if (curNode.transform.name != StartNode.transform.name && curNode.transform.name != EndNode.transform.name)
+                curNode.GetComponent<MeshRenderer>().material = YellowMat;
+
+            //check if it is the target node
+            if (curNode.transform.name == end.transform.name)
+            {
+                Debug.Log("Found end node.");
+                break;
+            }
+            // if not final node, traverse all neighbours
+            foreach (GameObject nb in curNode.GetComponent<Node>().neighbours)
+            {
+                if (!ClosedSet.Contains(nb))        // skip closed list neighbours
+                {
+                    // find cost of moving to neighbout
+                    float moveCost = curNode.GetComponent<Node>().gCost + Vector3.Distance(curNode.transform.position, nb.transform.position);
+
+                    //if (moveCost < nb.GetComponent<Node>().GetFCost() || !OpenSet.Contains(nb))
+                    if (moveCost < nb.GetComponent<Node>().gCost || !OpenSet.Contains(nb))
+                    {
+                        nb.GetComponent<Node>().gCost = moveCost;
+                        nb.GetComponent<Node>().hCost = Vector3.Distance(nb.transform.position, endNodePos);
+                        nb.GetComponent<Node>().Parent = curNode;
+
+                        if (!OpenSet.Contains(nb))
+                        {
+                            OpenSet.Add(nb);
+                            if (nb.transform.name != end.transform.name)
+                                nb.GetComponent<MeshRenderer>().material = BlueMat;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // add the path in list
+        GameObject currNode = end;
+
+        pathList.Add(EndNode.transform);
+        while (currNode.GetComponent<Node>().Parent != null)
+        {
+            pathList.Add(currNode.GetComponent<Node>().Parent.transform);
+            currNode = currNode.GetComponent<Node>().Parent;
+        }
+
+        pathList.Reverse();
+
+        return pathList;
+
+    }
+
+
     // cluster heuristics:
     void StartPathfindingCluster()
     {
-        Debug.Log("You have chosen cluster heuristic");
+        // check if start node and end nodes are both in the same cluster, if so, do regular path finding.
+        GameObject clusterStart = StartNode.GetComponent<Node>().cluster;
+        GameObject clusterEnd = EndNode.GetComponent<Node>().cluster;
+        if (clusterStart.transform.name == clusterEnd.transform.name)
+        {
+            StartPathfindingRegular();
+            Debug.Log("Path within the same cluster");
+        }
+        else
+        {
+            StartNode = clusterStart;
+            EndNode = clusterEnd;
+            StartPathfindingRegular();
+            Debug.Log("Path among different clusters.");
+
+            // store path of clusters
+            List<Transform> clusterPath = StartPathfindingRegular(clusterStart,clusterEnd);
+
+        }
     }
 
 
@@ -316,8 +406,14 @@ public class Pathfinding : MonoBehaviour
         {
             AllNodesParent.transform.GetChild(i).GetComponent<Node>().Parent = null;
             AllNodesParent.transform.GetChild(i).GetComponent<Node>().ResetMaterial();
-
         }
+        for (int i = 0; i < AllClustersParent.transform.childCount; i++)
+        {
+            AllClustersParent.transform.GetChild(i).GetComponent<Node>().Parent = null;
+            AllClustersParent.transform.GetChild(i).GetComponent<Node>().ResetMaterial();
+        }
+
+
 
         distanceCovered = 0;
     }
