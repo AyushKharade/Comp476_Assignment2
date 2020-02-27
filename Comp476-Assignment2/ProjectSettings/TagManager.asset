@@ -7,6 +7,7 @@ TagManager:
   - Node
   - A*
   - Map
+  - Clusters
   layers:
   - Default
   - TransparentFX
