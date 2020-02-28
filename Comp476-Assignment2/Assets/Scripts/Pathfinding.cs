@@ -371,11 +371,18 @@ public class Pathfinding : MonoBehaviour
                 Debug.Log(T.name + ">> ");
             }
             */
-            if (returnPath)
-                return clusterTotalPath;
-            else
-                return null;
 
+
+            if (returnPath)
+            {
+                ResetPathfinding();
+                return clusterTotalPath;
+            }
+            else
+            {
+                DrawPath(clusterTotalPath);
+                return null;
+            }
 
         }
     }

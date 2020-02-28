@@ -31,11 +31,14 @@ public class NPC_Pathfinder : MonoBehaviour
 
     int traverseIndex = 0;
 
+    Animator animator;
 
 
     void Start()
     {
         AStarScript = AStarRef.GetComponent<Pathfinding>();
+
+        animator = GetComponent<Animator>();
 
         int r = Random.Range(0, AllNodesParent.transform.childCount);
         currentDestination = AllNodesParent.transform.GetChild(r);
@@ -59,28 +62,65 @@ public class NPC_Pathfinder : MonoBehaviour
         }
         else if (hasDestination && moving)
             MoveToTarget();
+
+        // anim
+        if (moving)
+        {
+            if (animator.GetFloat("Locomotion") < 1)
+                animator.SetFloat("Locomotion", animator.GetFloat("Locomotion") + 0.04f);
+        }
+        else
+        {
+            if (animator.GetFloat("Locomotion") > 0)
+                animator.SetFloat("Locomotion", animator.GetFloat("Locomotion") - 0.04f);
+        }
     }
 
     void MoveToTarget()
     {
+        Vector3 FaceDir=transform.forward;
         if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
         {
             Vector3 dir = (currentTarget.position - transform.position).normalized;
-            transform.Translate(dir * mSpeed * Time.deltaTime);
+            FaceDir = dir;
+            //transform.Translate(dir * mSpeed * Time.deltaTime);
+            transform.parent.Translate(dir * mSpeed * Time.deltaTime);
         }
         else
         {
             Debug.Log("Reached path index: " + traverseIndex);
-            traverseIndex++;
-            currentTarget = followPath[traverseIndex];
+            if (traverseIndex < followPath.Count-1)
+            {
+                traverseIndex++;
+                currentTarget = followPath[traverseIndex];
+            }
         }
 
-        if (traverseIndex == followPath.Count && Vector3.Distance(transform.position, currentDestination.position) > 0.2f)
+        
+        if (traverseIndex == followPath.Count || Vector3.Distance(transform.position, currentDestination.position) < 0.2f)
         {
             Debug.Log("Destination Reached.");
             hasDestination = false;
+            moving = false;
             currentDestination.GetComponent<Node>().ResetMaterial();
         }
+
+        // align orietation
+        Align(FaceDir);
+    }
+
+
+
+
+    //------------------------ Steering behaviors ------
+    void Align(Vector3 dir)
+    {
+        Quaternion lookDirection;
+
+        //set quaternion to this dir
+        lookDirection = Quaternion.LookRotation(dir, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, 4);
+
     }
 
     GameObject FindClosestNode()
