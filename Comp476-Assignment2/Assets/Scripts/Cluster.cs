@@ -38,4 +38,19 @@ public class Cluster : MonoBehaviour
         }
         return exitNode;
     }
+
+    public GameObject GetBestCoverPoint(Transform pos)            // get best cover point relative to position
+    {
+        GameObject best = null;
+        float coverValue = 0;
+        float distance = float.MaxValue;
+        foreach (GameObject gb in clusterElements)
+        {
+            if (gb.GetComponent<Node>().coverValue > coverValue && Vector3.Distance(pos.position, gb.transform.position) < distance)
+            {
+                best = gb;
+            }
+        }
+        return best;
+    }
 }

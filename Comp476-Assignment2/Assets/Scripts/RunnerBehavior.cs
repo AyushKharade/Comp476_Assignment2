@@ -38,7 +38,8 @@ public class RunnerBehavior : MonoBehaviour
         GetDistances();
         closestChaser = GetClosestChaser();
 
-        CurrentClusterCheck();
+        //CurrentClusterCheck();
+        isCurrentClusterEmpty= ClusterCheck(transform.GetComponent<NPC_Pathfinder>().currentCluster.transform);
         SeekCheck();
 
     }
@@ -58,7 +59,7 @@ public class RunnerBehavior : MonoBehaviour
         else
             isBeingSeeked = false;
     }
-
+    /*
     void CurrentClusterCheck()
     {
         if (chaser1Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != transform.GetComponent<NPC_Pathfinder>().currentCluster.name
@@ -71,6 +72,21 @@ public class RunnerBehavior : MonoBehaviour
         }
         else
             isCurrentClusterEmpty = false;
+    }
+    */
+
+    bool ClusterCheck(Transform cluster)
+    {
+        if (chaser1Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != cluster.name
+            &&
+            chaser2Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != cluster.name
+            &&
+            chaser3Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != cluster.name)
+        {
+            return true;
+        }
+        else
+            return false;
     }
 
     void GetDistances()
@@ -91,7 +107,31 @@ public class RunnerBehavior : MonoBehaviour
     }
     public Transform RequestDestination()
     {
+        // acts as an FSM, tells what to do.
+        if (!isCurrentClusterEmpty)
+        {
+            // move to a random nearby cluster
+            // check which cluster neighbour is empty, move there
+            List<GameObject> neighbors = NPCRef.currentCluster.GetComponent<Node>().neighbours;
+            GameObject emptyCluster = null;
+            foreach (GameObject gb in neighbors)
+            {
+                if (ClusterCheck(gb.transform))
+                {
+                    emptyCluster = gb;
+                    break;
+                }
+            }
+            if (emptyCluster = null)
+                emptyCluster = neighbors[Random.Range(0,neighbors.Count)];
 
-        return transform;
+            // you have a cluster to move to, move to its fastest exit
+            return emptyCluster.GetComponent<Cluster>().GetFastestExit(transform.position, emptyCluster.transform.position).transform;
+        }
+        else
+        {
+            // find best spot in current cluster
+            return NPCRef.currentCluster.GetComponent<Cluster>().GetBestCoverPoint(transform).transform;
+        }
     }
 }

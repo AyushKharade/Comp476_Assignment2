@@ -9,6 +9,7 @@ public class NPC_Pathfinder : MonoBehaviour
     // common script for both npcs
 
     public float mSpeed=4;
+    public bool allowMovement=true;
 
     public enum type { Chaser, Runner};
     public type NPCType;
@@ -86,7 +87,7 @@ public class NPC_Pathfinder : MonoBehaviour
                 moving = true;
             }
         }
-        else if (hasDestination && moving)
+        else if (hasDestination && moving && allowMovement)
         {
             MoveToTarget();
         }
@@ -104,7 +105,7 @@ public class NPC_Pathfinder : MonoBehaviour
             }
             else if (NPCType + "" == "Runner")
             {
-                //RunnerNewDestination();
+                RunnerNewDestination();
             }
         }
 
