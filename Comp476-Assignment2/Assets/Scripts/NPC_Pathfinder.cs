@@ -96,7 +96,7 @@ public class NPC_Pathfinder : MonoBehaviour
             if (NPCType + "" == "Chaser")
             {
                 RequestTimer += Time.deltaTime;
-                if (RequestTimer > 0.1f)
+                if (RequestTimer > 0.025f)
                 {
                     RequestTimer = 0;
                     ChaserNewDestination();
@@ -104,7 +104,7 @@ public class NPC_Pathfinder : MonoBehaviour
             }
             else if (NPCType + "" == "Runner")
             {
-                //RunnerNewDestination();
+                RunnerNewDestination();
             }
         }
 
@@ -198,6 +198,11 @@ public class NPC_Pathfinder : MonoBehaviour
             followPath.Clear();
     }
 
+    public void ChangeClusterTarget()
+    {
+        ChaserNewDestination();
+    }
+
     void MoveToTarget()
     {
         if (!seekingTarget)
@@ -218,7 +223,7 @@ public class NPC_Pathfinder : MonoBehaviour
             }
             else
             {
-                Debug.Log("Reached path index: " + traverseIndex);
+                //Debug.Log("Reached path index: " + traverseIndex);
                 if (traverseIndex < followPath.Count - 1)
                 {
                     traverseIndex++;
@@ -276,7 +281,7 @@ public class NPC_Pathfinder : MonoBehaviour
     public GameObject FindClosestNode(Vector3 pos)
     {
         //overlap sphere
-        Collider[] arr = Physics.OverlapSphere(pos, 15f);
+        Collider[] arr = Physics.OverlapSphere(pos, 20f);
         GameObject ClosestNode = null;
         float closestDistance = float.MaxValue;
         foreach (Collider col in arr)

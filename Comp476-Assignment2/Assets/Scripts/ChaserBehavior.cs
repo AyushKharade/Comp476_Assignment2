@@ -22,6 +22,9 @@ public class ChaserBehavior : MonoBehaviour
     public bool seekTarget;
     public float distanceToTarget;
 
+    public Transform curTargetCluster=null;
+    public Transform curDestinationCluster=null;
+
     void Start()
     {
         NPCRef = GetComponent<NPC_Pathfinder>();
@@ -49,6 +52,22 @@ public class ChaserBehavior : MonoBehaviour
         }
         else
             seekTarget = false;
+
+
+        UpdateTargetCluster();
+        if (curTargetCluster!=null && curDestinationCluster!=null)
+        {
+            if (curTargetCluster.name != curDestinationCluster.name)
+            {
+                //NPCRef.StopMovement();
+                //NPCRef.ChangeClusterTarget();          // causes bugs
+            }
+        }
+    }
+
+    void UpdateTargetCluster()
+    {
+        curTargetCluster = ChaseTarget.GetComponent<NPC_Pathfinder>().currentCluster.transform;
     }
 
     public Transform RequestDestination()
@@ -60,6 +79,7 @@ public class ChaserBehavior : MonoBehaviour
         {
             // then go to this cluster.
             isTargetInSameCluster = false;
+            curDestinationCluster = targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>().transform;
             return targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>().GetFastestExit(transform.position,ChaseTarget.transform.position).transform;
         }
         else
