@@ -22,6 +22,7 @@ public class NPC_Pathfinder : MonoBehaviour
     Transform currentTarget;
     public Transform currentDestination;
     public GameObject closestNode;
+    public GameObject currentCluster;
 
     public List<Transform> followPath = new List<Transform>();
     //public List<Vector3> followPath = new List<Vector3>();
@@ -100,9 +101,17 @@ public class NPC_Pathfinder : MonoBehaviour
         }
     }
 
+    public void StopMovement()
+    {
+        hasDestination = false;
+        moving = false;
+        currentDestination = null;
+        followPath.Clear();
+    }
+
     void MoveToTarget()
     {
-
+        currentCluster = currentTarget.GetComponent<Node>().cluster;
         Vector3 dir = transform.forward;
         if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
         {
