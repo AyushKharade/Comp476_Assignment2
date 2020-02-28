@@ -24,6 +24,8 @@ public class RunnerBehavior : MonoBehaviour
     public float c2Distance;
     public float c3Distance;
 
+    public Transform bestCoverNode;
+
     [Header("States")]
     public bool isCurrentClusterEmpty;    // if true, stand at the highest cover value node.
     public bool isBeingSeeked;            // if anyone is actively seeking, run faster.
@@ -40,6 +42,8 @@ public class RunnerBehavior : MonoBehaviour
 
         //CurrentClusterCheck();
         isCurrentClusterEmpty= ClusterCheck(transform.GetComponent<NPC_Pathfinder>().currentCluster.transform);
+        if (!isCurrentClusterEmpty)
+            NPCRef.safe = false;
         SeekCheck();
 
     }
@@ -59,22 +63,7 @@ public class RunnerBehavior : MonoBehaviour
         else
             isBeingSeeked = false;
     }
-    /*
-    void CurrentClusterCheck()
-    {
-        if (chaser1Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != transform.GetComponent<NPC_Pathfinder>().currentCluster.name
-            &&
-            chaser2Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != transform.GetComponent<NPC_Pathfinder>().currentCluster.name
-            &&
-            chaser3Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != transform.GetComponent<NPC_Pathfinder>().currentCluster.name)
-        {
-            isCurrentClusterEmpty = true;
-        }
-        else
-            isCurrentClusterEmpty = false;
-    }
-    */
-
+ 
     bool ClusterCheck(Transform cluster)
     {
         if (chaser1Ref.GetComponent<NPC_Pathfinder>().currentCluster.name != cluster.name
@@ -108,30 +97,42 @@ public class RunnerBehavior : MonoBehaviour
     public Transform RequestDestination()
     {
         // acts as an FSM, tells what to do.
-        if (!isCurrentClusterEmpty)
+        if (!isCurrentClusterEmpty)                 // you are not alone in current cluster so move
         {
             // move to a random nearby cluster
             // check which cluster neighbour is empty, move there
             List<GameObject> neighbors = NPCRef.currentCluster.GetComponent<Node>().neighbours;
+            if (neighbors == null)
+                Debug.Log("Not good");
+
             GameObject emptyCluster = null;
+            float dist = float.MaxValue;
             foreach (GameObject gb in neighbors)
             {
-                if (ClusterCheck(gb.transform))
+                if (ClusterCheck(gb.transform) && Vector3.Distance(transform.position,gb.transform.position)< dist)
                 {
+                    dist = Vector3.Distance(transform.position, gb.transform.position);
                     emptyCluster = gb;
-                    break;
                 }
             }
-            if (emptyCluster = null)
-                emptyCluster = neighbors[Random.Range(0,neighbors.Count)];
+            Debug.Log(">>>>>>>>>>>>>>>>> nearest empty cluster: " + emptyCluster.name);
+            Debug.Log(">>>>>>>>>>>>>>>>> Cluster Name: " + emptyCluster.GetComponent<Cluster>().clusterName);
 
-            // you have a cluster to move to, move to its fastest exit
-            return emptyCluster.GetComponent<Cluster>().GetFastestExit(transform.position, emptyCluster.transform.position).transform;
+            if (emptyCluster = null)
+            {
+                Debug.Log("Closest empty cluster was null");
+                emptyCluster = neighbors[Random.Range(0, neighbors.Count)];
+            }
+            return emptyCluster.GetComponent<Cluster>().GetRandomNode().transform;
+            //return AllNodesParent.transform.GetChild(Random.Range(0,AllNodesParent.transform.childCount));
         }
         else
         {
             // find best spot in current cluster
-            return NPCRef.currentCluster.GetComponent<Cluster>().GetBestCoverPoint(transform).transform;
+            NPCRef.safe = true;
+            Transform best = NPCRef.currentCluster.GetComponent<Cluster>().GetBestCoverPoint(transform).transform;
+            bestCoverNode = best;
+            return best;
         }
     }
 }

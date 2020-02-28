@@ -31,6 +31,8 @@ public class NPC_Pathfinder : MonoBehaviour
     bool moving;
     bool orienting;
     public bool seekingTarget;
+    //runner
+    public bool safe;
 
     int traverseIndex = 0;
 
@@ -105,7 +107,8 @@ public class NPC_Pathfinder : MonoBehaviour
             }
             else if (NPCType + "" == "Runner")
             {
-                RunnerNewDestination();
+                if(!safe)
+                    RunnerNewDestination();
             }
         }
 
@@ -162,6 +165,7 @@ public class NPC_Pathfinder : MonoBehaviour
 
     void RunnerNewDestination()
     {
+        seekingTarget = false;
         currentDestination = RBehavior.RequestDestination();
         // always will be a node.
         closestNode = FindClosestNode(transform.position);

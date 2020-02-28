@@ -46,11 +46,27 @@ public class Cluster : MonoBehaviour
         float distance = float.MaxValue;
         foreach (GameObject gb in clusterElements)
         {
-            if (gb.GetComponent<Node>().coverValue > coverValue && Vector3.Distance(pos.position, gb.transform.position) < distance)
+            if (gb.GetComponent<Node>().coverValue > coverValue) 
+                //&&
+                //Vector3.Distance(pos.position, gb.transform.position) < distance)
             {
+                coverValue = gb.GetComponent<Node>().coverValue;
                 best = gb;
             }
         }
         return best;
+    }
+
+    public GameObject GetRandomNode()
+    {
+        int r = Random.Range(0, clusterExits.Count);
+        /*
+        if (clusterElements[r] == null)
+        {
+            return clusterElements[0].gameObject;
+        }
+        return clusterElements[r].gameObject;
+        */
+        return clusterExits[r];
     }
 }
