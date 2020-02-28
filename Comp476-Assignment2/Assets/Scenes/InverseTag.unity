@@ -2082,6 +2082,8 @@ MonoBehaviour:
   isTargetInSameCluster: 0
   seekTarget: 0
   distanceToTarget: 0
+  curTargetCluster: {fileID: 0}
+  curDestinationCluster: {fileID: 0}
 --- !u!1 &224951775
 GameObject:
   m_ObjectHideFlags: 0
@@ -4253,6 +4255,8 @@ MonoBehaviour:
   isTargetInSameCluster: 0
   seekTarget: 0
   distanceToTarget: 0
+  curTargetCluster: {fileID: 0}
+  curDestinationCluster: {fileID: 0}
 --- !u!1 &483736501
 GameObject:
   m_ObjectHideFlags: 0
@@ -17809,9 +17813,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllNodesParent: {fileID: 855570048}
   AllClusterParent: {fileID: 1664991565}
-  chaser1Ref: {fileID: 0}
-  chaser2Ref: {fileID: 0}
-  chaser3Ref: {fileID: 0}
+  chaser1Ref: {fileID: 2492428306584935506}
+  chaser2Ref: {fileID: 223482641}
+  chaser3Ref: {fileID: 464107181}
+  closestChaser: {fileID: 0}
+  c1Distance: 0
+  c2Distance: 0
+  c3Distance: 0
+  isCurrentClusterEmpty: 0
 --- !u!1 &1183512105285961085
 GameObject:
   m_ObjectHideFlags: 0
@@ -19493,6 +19502,8 @@ MonoBehaviour:
   isTargetInSameCluster: 0
   seekTarget: 0
   distanceToTarget: 0
+  curTargetCluster: {fileID: 0}
+  curDestinationCluster: {fileID: 0}
 --- !u!4 &1574951440000864669
 Transform:
   m_ObjectHideFlags: 0
@@ -19946,7 +19957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 2
+  mSpeed: 5.5
   NPCType: 1
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}

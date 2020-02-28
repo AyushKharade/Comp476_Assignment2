@@ -53,7 +53,6 @@ public class Pathfinding : MonoBehaviour
     public bool hideNodes;
 
     // test
-    public string scriptfunctionaccessTest = "hhaha yes lmao";
 
     void Start()
     {

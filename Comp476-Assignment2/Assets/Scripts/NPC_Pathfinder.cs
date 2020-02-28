@@ -104,7 +104,7 @@ public class NPC_Pathfinder : MonoBehaviour
             }
             else if (NPCType + "" == "Runner")
             {
-                RunnerNewDestination();
+                //RunnerNewDestination();
             }
         }
 
