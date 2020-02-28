@@ -45,6 +45,7 @@ public class NPC_Pathfinder : MonoBehaviour
     float RequestTimer = 0;
     float seekTimer = 0;         // incase npc got stuck seeking for too long, reset and start pathfinding again.
 
+    public int requestCounter;
 
     private void Awake()
     {
@@ -139,11 +140,20 @@ public class NPC_Pathfinder : MonoBehaviour
     void ChaserNewDestination()
     {
         currentDestination = CBehavior.RequestDestination();
+        requestCounter++;
         if (currentDestination.tag == "Node")
         {
             seekingTarget = false;
             closestNode = FindClosestNode(transform.position);
-            followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+            //followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+
+            List<Transform> tempPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+
+            foreach (Transform T in tempPath)
+            {
+                if (!followPath.Contains(T))
+                    followPath.Add(T);
+            }
 
             if (closestNode.transform.name != currentDestination.transform.name || followPath != null)
             {
@@ -167,9 +177,16 @@ public class NPC_Pathfinder : MonoBehaviour
     {
         seekingTarget = false;
         currentDestination = RBehavior.RequestDestination();
+        requestCounter++;
         // always will be a node.
         closestNode = FindClosestNode(transform.position);
-        followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+        List<Transform> tempPath= AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+
+        foreach (Transform T in tempPath)
+        {
+            if (!followPath.Contains(T))
+                followPath.Add(T);
+        }
 
         if (closestNode.transform.name != currentDestination.transform.name || followPath != null)
         {
@@ -234,6 +251,7 @@ public class NPC_Pathfinder : MonoBehaviour
                     traverseIndex++;
                     currentTarget = followPath[traverseIndex];
                 }
+                
             }
 
 
@@ -266,7 +284,15 @@ public class NPC_Pathfinder : MonoBehaviour
                 else
                     orienting = true;
             }
+            closestNode = FindClosestNode(transform.position);
+            currentCluster = closestNode.GetComponent<Node>().cluster;
             Align(dir);
+
+            if (Vector3.Distance(currentTarget.position, transform.position) > 5f)
+            {
+                seekingTarget = false;
+                StopMovement();
+            }
         }
     }
 
@@ -305,7 +331,13 @@ public class NPC_Pathfinder : MonoBehaviour
                     Physics.Raycast(rayOutPos, dir, out hitobj);     // Make sure its visible
                     //Debug.Log("Ray out towards "+col.name+" hit: "+hitobj.collider.name);
 
-                    if (hitobj.collider.tag == "Node" && hitobj.collider.name == col.name)
+                    if (Vector3.Distance(col.transform.position, transform.position) < 0.2)
+                    {
+                        ClosestNode = col.gameObject;
+                        closestDistance = Vector3.Distance(transform.position, col.transform.position);
+                    }
+                    else if (hitobj.collider.tag == "Node" && hitobj.collider.name == col.name)
+                    //if (true)
                     {
                         ClosestNode = col.gameObject;
                         closestDistance = Vector3.Distance(transform.position, col.transform.position);

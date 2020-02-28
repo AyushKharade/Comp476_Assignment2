@@ -2021,8 +2021,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 4
-  allowMovement: 0
+  mSpeed: 2
+  allowMovement: 1
   NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
@@ -2033,6 +2033,7 @@ MonoBehaviour:
   hasDestination: 0
   seekingTarget: 0
   safe: 0
+  requestCounter: 0
 --- !u!136 &223482643
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2291,7 +2292,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245754735}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.54, y: -10.81, z: -19.47}
+  m_LocalPosition: {x: -22.47, y: -10.81, z: -20.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1181563417348417507}
@@ -2901,7 +2902,7 @@ MonoBehaviour:
   - {fileID: 333837203}
   Parent: {fileID: 0}
   cluster: {fileID: 1349798718}
-  coverValue: 0.92
+  coverValue: 0.66
 --- !u!23 &324478904
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3049,7 +3050,7 @@ MonoBehaviour:
   - {fileID: 324478900}
   Parent: {fileID: 0}
   cluster: {fileID: 1605063110}
-  coverValue: 0.77
+  coverValue: 0.81
 --- !u!23 &333837207
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4195,8 +4196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 4
-  allowMovement: 0
+  mSpeed: 2
+  allowMovement: 1
   NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
@@ -4207,6 +4208,7 @@ MonoBehaviour:
   hasDestination: 0
   seekingTarget: 0
   safe: 0
+  requestCounter: 0
 --- !u!136 &464107183
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5419,7 +5421,7 @@ MonoBehaviour:
   - {fileID: 2118317612}
   Parent: {fileID: 0}
   cluster: {fileID: 166882161}
-  coverValue: 0.76
+  coverValue: 0.93
 --- !u!23 &636924660
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12852,7 +12854,7 @@ MonoBehaviour:
   - {fileID: 1911754984}
   Parent: {fileID: 0}
   cluster: {fileID: 1605063110}
-  coverValue: 0.86
+  coverValue: 0.35
 --- !u!23 &1606871710
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15298,7 +15300,7 @@ MonoBehaviour:
   - {fileID: 952929852}
   Parent: {fileID: 0}
   cluster: {fileID: 1349798718}
-  coverValue: 0.9
+  coverValue: 0.93
 --- !u!23 &2010008099
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -19962,7 +19964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 5.5
+  mSpeed: 7.5
   allowMovement: 1
   NPCType: 1
   AStarRef: {fileID: 457386175}
@@ -19974,6 +19976,7 @@ MonoBehaviour:
   hasDestination: 0
   seekingTarget: 0
   safe: 0
+  requestCounter: 0
 --- !u!4 &2321699815866152871
 Transform:
   m_ObjectHideFlags: 0
@@ -20231,7 +20234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 4
+  mSpeed: 2
   allowMovement: 1
   NPCType: 0
   AStarRef: {fileID: 457386175}
@@ -20243,6 +20246,7 @@ MonoBehaviour:
   hasDestination: 0
   seekingTarget: 0
   safe: 0
+  requestCounter: 0
 --- !u!136 &2757027302737144744
 CapsuleCollider:
   m_ObjectHideFlags: 0
