@@ -40,6 +40,7 @@ public class NPC_Pathfinder : MonoBehaviour
 
     // temp timer
     float RequestTimer = 0;
+    float seekTimer = 0;         // incase npc got stuck seeking for too long, reset and start pathfinding again.
 
 
     private void Awake()
@@ -119,6 +120,14 @@ public class NPC_Pathfinder : MonoBehaviour
                 animator.SetFloat("Locomotion", animator.GetFloat("Locomotion") - 0.04f);
         }
 
+
+        // if seek gets stuck.
+        //seekTimer += Time.deltaTime;
+        //if (seekTimer > 7.5f)
+        //{
+            //reset
+        //}
+
     }
 
     
@@ -152,6 +161,21 @@ public class NPC_Pathfinder : MonoBehaviour
 
     void RunnerNewDestination()
     {
+        currentDestination = RBehavior.RequestDestination();
+        // always will be a node.
+        closestNode = FindClosestNode(transform.position);
+        followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+
+        if (closestNode.transform.name != currentDestination.transform.name || followPath != null)
+        {
+            hasDestination = true;
+        }
+        else
+        {
+            Debug.Log("Cancelled Destination: " + currentDestination.transform.name + " for " + transform.name);
+            hasDestination = false;
+            currentDestination = null;
+        }
 
     }
 
@@ -246,51 +270,7 @@ public class NPC_Pathfinder : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, 4);
 
     }
-
-
-    void GoToNewPosition()
-    {
-        hasDestination = true;
-        int r = Random.Range(0, AllNodesParent.transform.childCount);
-        currentDestination = AllNodesParent.transform.GetChild(r);
-        //followPath = AStarScript.ClusterPathFind(FindClosestNode(),currentDestination.gameObject);
-        followPath = AStarScript.ClusterPathFind(FindClosestNode(transform.position),currentDestination.gameObject);
-    }
-
-    /*
-    GameObject FindClosestNode()
-    {
-        //overlap sphere
-        Collider[] arr = Physics.OverlapSphere(transform.position,15f);
-        GameObject ClosestNode = null;
-        float closestDistance=float.MaxValue;
-        foreach (Collider col in arr)
-        {
-            if (col.tag == "Node")
-            {
-                if (Vector3.Distance(transform.position, col.transform.position) < closestDistance)
-                {
-                    Vector3 rayOutPos = transform.position;
-                    rayOutPos.y += 0.2f;
-                    Vector3 dir = (col.transform.position - transform.position).normalized;
-
-                    RaycastHit hitobj;
-                    Physics.Raycast(rayOutPos,dir, out hitobj);     // Make sure its visible
-                    //Debug.Log("Ray out towards "+col.name+" hit: "+hitobj.collider.name);
-
-                    if (hitobj.collider.tag=="Node" && hitobj.collider.name == col.name)
-                    {
-                        ClosestNode = col.gameObject;
-                        closestDistance = Vector3.Distance(transform.position, col.transform.position);
-                    }
-                    
-                }
-            }
-        }
-        return ClosestNode;
-        //Debug.Log("Closest Node: "+closestNode.transform.name);
-    }
-    */
+    
 
     public GameObject FindClosestNode(Vector3 pos)
     {
@@ -322,6 +302,5 @@ public class NPC_Pathfinder : MonoBehaviour
             }
         }
         return ClosestNode;
-        //Debug.Log("Closest Node: "+closestNode.transform.name);
     }
 }

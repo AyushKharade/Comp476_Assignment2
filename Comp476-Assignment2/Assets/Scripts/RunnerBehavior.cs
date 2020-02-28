@@ -15,6 +15,10 @@ public class RunnerBehavior : MonoBehaviour
     public Transform AllClusterParent;
     NPC_Pathfinder NPCRef;
 
+    public Transform chaser1Ref;
+    public Transform chaser2Ref;
+    public Transform chaser3Ref;
+
     void Start()
     {
         NPCRef = GetComponent<NPC_Pathfinder>();
