@@ -27,7 +27,10 @@ public class TagCamera : MonoBehaviour
         Target = ListOfTargets[0];
         targetIndex = 0;
 
-        Debug.Log(" Mod: "+(-1%2));
+        xOldOffset = xOffset;
+        yOldOffset = height;
+        zOldOffset = zOffset;
+
     }
 
     void Update()

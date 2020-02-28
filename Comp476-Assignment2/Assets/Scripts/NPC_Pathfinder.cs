@@ -28,6 +28,7 @@ public class NPC_Pathfinder : MonoBehaviour
 
     bool hasDestination;
     bool moving;
+    bool orienting;
 
     int traverseIndex = 0;
 
@@ -45,9 +46,14 @@ public class NPC_Pathfinder : MonoBehaviour
         currentDestination.GetComponent<MeshRenderer>().material.color = Color.red;
         closestNode = FindClosestNode();
 
-        followPath = AStarScript.ClusterPathFind(closestNode,currentDestination.gameObject);
-        hasDestination = true;
-        
+        if (closestNode.transform.name != currentDestination.transform.name)
+        {
+            followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+            if (followPath != null)
+                hasDestination = true;
+            else
+                Debug.Log(transform.name + " received a null path from position: " + closestNode.transform.name + "to destination: "+currentDestination.transform.name);
+        }
     }
 
     
@@ -57,14 +63,26 @@ public class NPC_Pathfinder : MonoBehaviour
         if (hasDestination && !moving)
         {
             traverseIndex = 0;
-            currentTarget = followPath[0];
-            moving = true;
+            if (followPath==null)
+            {
+                hasDestination = false;
+                moving = false;
+            }
+            else
+            {
+                currentTarget = followPath[0];
+                moving = true;
+            }
         }
         else if (hasDestination && moving)
             MoveToTarget();
+        else if (!hasDestination)
+        {
+            GoToNewPosition();
+        }
 
         // anim
-        if (moving)
+        if (moving && !orienting)
         {
             if (animator.GetFloat("Locomotion") < 1)
                 animator.SetFloat("Locomotion", animator.GetFloat("Locomotion") + 0.04f);
@@ -74,22 +92,34 @@ public class NPC_Pathfinder : MonoBehaviour
             if (animator.GetFloat("Locomotion") > 0)
                 animator.SetFloat("Locomotion", animator.GetFloat("Locomotion") - 0.04f);
         }
+
+        if (!hasDestination)
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+                GoToNewPosition();
+        }
     }
 
     void MoveToTarget()
     {
-        Vector3 FaceDir=transform.forward;
+
+        Vector3 dir = transform.forward;
         if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
         {
-            Vector3 dir = (currentTarget.position - transform.position).normalized;
-            FaceDir = dir;
-            //transform.Translate(dir * mSpeed * Time.deltaTime);
-            transform.parent.Translate(dir * mSpeed * Time.deltaTime);
+            dir = (currentTarget.position - transform.position).normalized;
+            if (Vector3.Angle(transform.forward, dir) < 10)
+            {
+                transform.parent.Translate(dir * mSpeed * Time.deltaTime);
+                orienting = false;
+            }
+            else
+                orienting = true;
+
         }
         else
         {
             Debug.Log("Reached path index: " + traverseIndex);
-            if (traverseIndex < followPath.Count-1)
+            if (traverseIndex < followPath.Count - 1)
             {
                 traverseIndex++;
                 currentTarget = followPath[traverseIndex];
@@ -106,7 +136,7 @@ public class NPC_Pathfinder : MonoBehaviour
         }
 
         // align orietation
-        Align(FaceDir);
+        Align(dir);
     }
 
 
@@ -123,10 +153,20 @@ public class NPC_Pathfinder : MonoBehaviour
 
     }
 
+
+    void GoToNewPosition()
+    {
+        hasDestination = true;
+        int r = Random.Range(0, AllNodesParent.transform.childCount);
+        currentDestination = AllNodesParent.transform.GetChild(r);
+        followPath = AStarScript.ClusterPathFind(FindClosestNode(),currentDestination.gameObject);
+    }
+
+
     GameObject FindClosestNode()
     {
         //overlap sphere
-        Collider[] arr = Physics.OverlapSphere(transform.position,10f);
+        Collider[] arr = Physics.OverlapSphere(transform.position,15f);
         GameObject ClosestNode = null;
         float closestDistance=float.MaxValue;
         foreach (Collider col in arr)
