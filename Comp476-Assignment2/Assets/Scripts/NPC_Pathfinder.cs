@@ -29,7 +29,7 @@ public class NPC_Pathfinder : MonoBehaviour
     public bool hasDestination;
     bool moving;
     bool orienting;
-    bool seekingTarget;
+    public bool seekingTarget;
 
     int traverseIndex = 0;
 
@@ -155,7 +155,14 @@ public class NPC_Pathfinder : MonoBehaviour
 
     }
 
-
+    public void SeekTarget(Transform dest)
+    {
+        hasDestination = true;
+        moving = true;
+        seekingTarget = true;
+        currentDestination = dest;
+        currentTarget = dest;
+    }
 
 
     public void StopMovement()
@@ -209,6 +216,7 @@ public class NPC_Pathfinder : MonoBehaviour
         else
         {
             //seeking target
+            //Debug.Log("Seeking target");
             Vector3 dir = transform.forward;
             if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
             {
