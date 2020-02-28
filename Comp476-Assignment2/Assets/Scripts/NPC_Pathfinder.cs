@@ -96,7 +96,7 @@ public class NPC_Pathfinder : MonoBehaviour
             if (NPCType + "" == "Chaser")
             {
                 RequestTimer += Time.deltaTime;
-                if (RequestTimer > 0.5f)
+                if (RequestTimer > 0.1f)
                 {
                     RequestTimer = 0;
                     ChaserNewDestination();
@@ -104,7 +104,7 @@ public class NPC_Pathfinder : MonoBehaviour
             }
             else if (NPCType + "" == "Runner")
             {
-                RunnerNewDestination();
+                //RunnerNewDestination();
             }
         }
 
@@ -194,7 +194,8 @@ public class NPC_Pathfinder : MonoBehaviour
         hasDestination = false;
         moving = false;
         currentDestination = null;
-        followPath.Clear();
+        if(followPath!=null)
+            followPath.Clear();
     }
 
     void MoveToTarget()

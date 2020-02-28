@@ -32,15 +32,16 @@ public class ChaserBehavior : MonoBehaviour
         distanceToTarget = Vector3.Distance(transform.position,ChaseTarget.position);
 
         // if distance is really small, interupt path following and seek target.
-
+        /*
         Vector3 rayOutPos = transform.position;
         rayOutPos.y += 0.2f;
         Vector3 dir = (ChaseTarget.transform.position - transform.position).normalized;
 
         RaycastHit hitobj;
         Physics.Raycast(rayOutPos, dir, out hitobj);     // Make sure its visible
+        */
 
-        if (distanceToTarget < 4.5f && hitobj.collider.tag=="Runner")
+        if (distanceToTarget < 3.5f)
         {
             seekTarget = true;
             NPCRef.StopMovement();
@@ -65,7 +66,6 @@ public class ChaserBehavior : MonoBehaviour
         {
             //same cluster
             isTargetInSameCluster = true;
-
             return targetScriptRef.FindClosestNode(ChaseTarget.transform.position).transform;
         }
 

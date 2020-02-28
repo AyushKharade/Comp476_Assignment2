@@ -2030,6 +2030,7 @@ MonoBehaviour:
   currentCluster: {fileID: 0}
   followPath: []
   hasDestination: 0
+  seekingTarget: 0
 --- !u!136 &223482643
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2079,6 +2080,8 @@ MonoBehaviour:
   AllClusterParent: {fileID: 1664991565}
   ChaseTarget: {fileID: 1181563417348417507}
   isTargetInSameCluster: 0
+  seekTarget: 0
+  distanceToTarget: 0
 --- !u!1 &224951775
 GameObject:
   m_ObjectHideFlags: 0
@@ -2284,7 +2287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245754735}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.8399997, y: -10.81, z: 2.23}
+  m_LocalPosition: {x: 9.59, y: -10.81, z: 3.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1181563417348417507}
@@ -4093,7 +4096,7 @@ MonoBehaviour:
   AllClustersParent: {fileID: 1664991564}
   OpenSet: []
   clusterHeuristic: 1
-  NPCScene: 0
+  NPCScene: 1
   hideClusters: 0
   hideNodes: 0
   scriptfunctionaccessTest: hhaha yes lmao
@@ -4198,6 +4201,7 @@ MonoBehaviour:
   currentCluster: {fileID: 0}
   followPath: []
   hasDestination: 0
+  seekingTarget: 0
 --- !u!136 &464107183
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4247,6 +4251,8 @@ MonoBehaviour:
   AllClusterParent: {fileID: 1664991565}
   ChaseTarget: {fileID: 1181563417348417507}
   isTargetInSameCluster: 0
+  seekTarget: 0
+  distanceToTarget: 0
 --- !u!1 &505384009
 GameObject:
   m_ObjectHideFlags: 0
@@ -8365,8 +8371,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.17632292, y: -0.815863, z: 0.32199454, w: 0.44676316}
-  m_LocalPosition: {x: 17.511635, y: 9.269703, z: 2.9479973}
+  m_LocalRotation: {x: -0.0017898977, y: 0.8066088, z: -0.59107804, w: -0.0024281144}
+  m_LocalPosition: {x: -0.2641369, y: 28.44581, z: 9.234769}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -8391,9 +8397,9 @@ MonoBehaviour:
   - {fileID: 175755728}
   - {fileID: 2035611084}
   smoothValue: 0.3
-  height: 10
-  xOffset: 5
-  zOffset: 5
+  height: 25
+  xOffset: 0
+  zOffset: 5.5
 --- !u!1 &989103812
 GameObject:
   m_ObjectHideFlags: 0
@@ -17685,6 +17691,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllNodesParent: {fileID: 855570048}
   AllClusterParent: {fileID: 1664991565}
+  chaser1Ref: {fileID: 0}
+  chaser2Ref: {fileID: 0}
+  chaser3Ref: {fileID: 0}
 --- !u!1 &1183512105285961085
 GameObject:
   m_ObjectHideFlags: 0
@@ -19364,6 +19373,8 @@ MonoBehaviour:
   AllClusterParent: {fileID: 1664991565}
   ChaseTarget: {fileID: 1181563417348417507}
   isTargetInSameCluster: 0
+  seekTarget: 0
+  distanceToTarget: 0
 --- !u!4 &1574951440000864669
 Transform:
   m_ObjectHideFlags: 0
@@ -19817,7 +19828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 4
+  mSpeed: 2
   NPCType: 1
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
@@ -19826,6 +19837,7 @@ MonoBehaviour:
   currentCluster: {fileID: 0}
   followPath: []
   hasDestination: 0
+  seekingTarget: 0
 --- !u!4 &2321699815866152871
 Transform:
   m_ObjectHideFlags: 0
@@ -20092,6 +20104,7 @@ MonoBehaviour:
   currentCluster: {fileID: 0}
   followPath: []
   hasDestination: 0
+  seekingTarget: 0
 --- !u!136 &2757027302737144744
 CapsuleCollider:
   m_ObjectHideFlags: 0
