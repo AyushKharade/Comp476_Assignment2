@@ -1972,6 +1972,7 @@ GameObject:
   - component: {fileID: 223482644}
   - component: {fileID: 223482643}
   - component: {fileID: 223482642}
+  - component: {fileID: 223482645}
   m_Layer: 0
   m_Name: ZombieChaser
   m_TagString: Untagged
@@ -2021,12 +2022,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 4
-  NPCType: 1
+  NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
   currentDestination: {fileID: 0}
   closestNode: {fileID: 0}
+  currentCluster: {fileID: 0}
   followPath: []
+  hasDestination: 0
 --- !u!136 &223482643
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2060,6 +2063,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &223482645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223482640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd582e5f3a6f8042966afc771134a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllNodesParent: {fileID: 855570048}
+  AllClusterParent: {fileID: 1664991565}
+  ChaseTarget: {fileID: 245754736}
 --- !u!1 &224951775
 GameObject:
   m_ObjectHideFlags: 0
@@ -4121,6 +4139,7 @@ GameObject:
   - component: {fileID: 464107184}
   - component: {fileID: 464107183}
   - component: {fileID: 464107182}
+  - component: {fileID: 464107185}
   m_Layer: 0
   m_Name: ZombieChaser
   m_TagString: Untagged
@@ -4170,12 +4189,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 4
-  NPCType: 1
+  NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
   currentDestination: {fileID: 0}
   closestNode: {fileID: 0}
+  currentCluster: {fileID: 0}
   followPath: []
+  hasDestination: 0
 --- !u!136 &464107183
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4209,6 +4230,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &464107185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464107180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd582e5f3a6f8042966afc771134a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllNodesParent: {fileID: 855570048}
+  AllClusterParent: {fileID: 1664991565}
+  ChaseTarget: {fileID: 245754736}
 --- !u!1 &505384009
 GameObject:
   m_ObjectHideFlags: 0
@@ -17625,6 +17661,7 @@ GameObject:
   - component: {fileID: 1240851582174587119}
   - component: {fileID: 5004123955544016569}
   - component: {fileID: 2316564160243295687}
+  - component: {fileID: 1182322530323606594}
   m_Layer: 0
   m_Name: ElfRunner
   m_TagString: Untagged
@@ -17632,6 +17669,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1182322530323606594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182322530323606593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31818e64faea00d46b3f8aeb971d2a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllNodesParent: {fileID: 855570048}
+  AllClusterParent: {fileID: 1664991565}
 --- !u!1 &1183512105285961085
 GameObject:
   m_ObjectHideFlags: 0
@@ -19287,6 +19338,7 @@ GameObject:
   - component: {fileID: 5484506486162534696}
   - component: {fileID: 2757027302737144744}
   - component: {fileID: 2746863491541832446}
+  - component: {fileID: 1499060469771103810}
   m_Layer: 0
   m_Name: ZombieChaser
   m_TagString: Untagged
@@ -19294,6 +19346,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1499060469771103810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499060469771103809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd582e5f3a6f8042966afc771134a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllNodesParent: {fileID: 855570048}
+  AllClusterParent: {fileID: 1664991565}
+  ChaseTarget: {fileID: 245754736}
 --- !u!4 &1574951440000864669
 Transform:
   m_ObjectHideFlags: 0
@@ -19753,7 +19820,9 @@ MonoBehaviour:
   AllNodesParent: {fileID: 855570047}
   currentDestination: {fileID: 0}
   closestNode: {fileID: 0}
+  currentCluster: {fileID: 0}
   followPath: []
+  hasDestination: 0
 --- !u!4 &2321699815866152871
 Transform:
   m_ObjectHideFlags: 0
@@ -20012,12 +20081,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 4
-  NPCType: 1
+  NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
   currentDestination: {fileID: 0}
   closestNode: {fileID: 0}
+  currentCluster: {fileID: 0}
   followPath: []
+  hasDestination: 0
 --- !u!136 &2757027302737144744
 CapsuleCollider:
   m_ObjectHideFlags: 0

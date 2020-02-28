@@ -25,9 +25,8 @@ public class NPC_Pathfinder : MonoBehaviour
     public GameObject currentCluster;
 
     public List<Transform> followPath = new List<Transform>();
-    //public List<Vector3> followPath = new List<Vector3>();
 
-    bool hasDestination;
+    public bool hasDestination;
     bool moving;
     bool orienting;
 
@@ -35,26 +34,23 @@ public class NPC_Pathfinder : MonoBehaviour
 
     Animator animator;
 
+    RunnerBehavior RBehavior;
+    ChaserBehavior CBehavior;
 
     void Start()
     {
         AStarScript = AStarRef.GetComponent<Pathfinding>();
-
         animator = GetComponent<Animator>();
 
-        int r = Random.Range(0, AllNodesParent.transform.childCount);
-        currentDestination = AllNodesParent.transform.GetChild(r);
-        currentDestination.GetComponent<MeshRenderer>().material.color = Color.red;
-        closestNode = FindClosestNode();
-
-        if (closestNode.transform.name != currentDestination.transform.name)
+        if (NPCType + "" == "Chaser")
         {
-            followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
-            if (followPath != null)
-                hasDestination = true;
-            else
-                Debug.Log(transform.name + " received a null path from position: " + closestNode.transform.name + "to destination: "+currentDestination.transform.name);
+            CBehavior = GetComponent<ChaserBehavior>();
         }
+        else if (NPCType + "" == "Runner")
+        {
+            RBehavior = GetComponent<RunnerBehavior>();
+        }
+       
     }
 
     
@@ -79,7 +75,15 @@ public class NPC_Pathfinder : MonoBehaviour
             MoveToTarget();
         else if (!hasDestination)
         {
-            GoToNewPosition();
+            //GoToNewPosition();
+            if (NPCType + "" == "Chaser")
+            {
+                ChaserNewDestination();
+            }
+            else if (NPCType + "" == "Runner")
+            {
+                RunnerNewDestination();
+            }
         }
 
         // anim
@@ -100,6 +104,32 @@ public class NPC_Pathfinder : MonoBehaviour
                 GoToNewPosition();
         }
     }
+
+
+    void ChaserNewDestination()
+    {
+        currentDestination = CBehavior.RequestDestination();
+        closestNode = FindClosestNode();
+        followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+        if (closestNode.transform.name != currentDestination.transform.name || followPath != null)
+        {
+            hasDestination = true;
+        }
+        else
+        {
+            hasDestination = false;
+            currentDestination = null;
+        }
+    }
+
+
+    void RunnerNewDestination()
+    {
+
+    }
+
+
+
 
     public void StopMovement()
     {
