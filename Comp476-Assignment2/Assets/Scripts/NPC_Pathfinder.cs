@@ -240,6 +240,8 @@ public class NPC_Pathfinder : MonoBehaviour
             if (traverseIndex == followPath.Count || Vector3.Distance(transform.position, currentDestination.position) < 0.2f)
             {
                 Debug.Log("Destination Reached.");
+                followPath.Clear();
+                
                 hasDestination = false;
                 moving = false;
                 currentDestination.GetComponent<Node>().ResetMaterial();

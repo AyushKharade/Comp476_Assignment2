@@ -1414,7 +1414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 175755727}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -22.5, y: -10.770184, z: -18.33}
+  m_LocalPosition: {x: -18.06, y: -10.770184, z: 4.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 223482641}
@@ -2022,6 +2022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 4
+  allowMovement: 0
   NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
@@ -2031,6 +2032,7 @@ MonoBehaviour:
   followPath: []
   hasDestination: 0
   seekingTarget: 0
+  safe: 0
 --- !u!136 &223482643
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2289,7 +2291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245754735}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.59, y: -10.81, z: 3.38}
+  m_LocalPosition: {x: -15.54, y: -10.81, z: -19.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1181563417348417507}
@@ -4101,7 +4103,6 @@ MonoBehaviour:
   NPCScene: 1
   hideClusters: 0
   hideNodes: 0
-  scriptfunctionaccessTest: hhaha yes lmao
 --- !u!1 &463978306
 GameObject:
   m_ObjectHideFlags: 0
@@ -4195,6 +4196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 4
+  allowMovement: 0
   NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
@@ -4204,6 +4206,7 @@ MonoBehaviour:
   followPath: []
   hasDestination: 0
   seekingTarget: 0
+  safe: 0
 --- !u!136 &464107183
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9682,7 +9685,7 @@ MonoBehaviour:
   - {fileID: 1905676856}
   Parent: {fileID: 0}
   cluster: {fileID: 1431581300}
-  coverValue: 0.8
+  coverValue: 0.97
 --- !u!23 &1122491381
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10329,7 +10332,7 @@ MonoBehaviour:
   - {fileID: 536944530}
   Parent: {fileID: 0}
   cluster: {fileID: 1431581300}
-  coverValue: 0.95
+  coverValue: 0.88
 --- !u!23 &1203977729
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10479,7 +10482,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222465124}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.58, y: -10.770184, z: -13.71}
+  m_LocalPosition: {x: -0.3, y: -10.770184, z: 4.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2492428306584935506}
@@ -17820,7 +17823,9 @@ MonoBehaviour:
   c1Distance: 0
   c2Distance: 0
   c3Distance: 0
+  bestCoverNode: {fileID: 0}
   isCurrentClusterEmpty: 0
+  isBeingSeeked: 0
 --- !u!1 &1183512105285961085
 GameObject:
   m_ObjectHideFlags: 0
@@ -19958,6 +19963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 5.5
+  allowMovement: 1
   NPCType: 1
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
@@ -19967,6 +19973,7 @@ MonoBehaviour:
   followPath: []
   hasDestination: 0
   seekingTarget: 0
+  safe: 0
 --- !u!4 &2321699815866152871
 Transform:
   m_ObjectHideFlags: 0
@@ -20225,6 +20232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 4
+  allowMovement: 1
   NPCType: 0
   AStarRef: {fileID: 457386175}
   AllNodesParent: {fileID: 855570047}
@@ -20234,6 +20242,7 @@ MonoBehaviour:
   followPath: []
   hasDestination: 0
   seekingTarget: 0
+  safe: 0
 --- !u!136 &2757027302737144744
 CapsuleCollider:
   m_ObjectHideFlags: 0

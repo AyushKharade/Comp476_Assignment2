@@ -42,7 +42,7 @@ public class RunnerBehavior : MonoBehaviour
 
         //CurrentClusterCheck();
         isCurrentClusterEmpty= ClusterCheck(transform.GetComponent<NPC_Pathfinder>().currentCluster.transform);
-        if (!isCurrentClusterEmpty)
+        if (!isCurrentClusterEmpty || Vector3.Distance(closestChaser.position,transform.position) < 10f)
             NPCRef.safe = false;
         SeekCheck();
 
@@ -100,36 +100,36 @@ public class RunnerBehavior : MonoBehaviour
         if (!isCurrentClusterEmpty)                 // you are not alone in current cluster so move
         {
             // move to a random nearby cluster
-            // check which cluster neighbour is empty, move there
+            // get current cluster's neighbors.
             List<GameObject> neighbors = NPCRef.currentCluster.GetComponent<Node>().neighbours;
-            if (neighbors == null)
-                Debug.Log("Not good");
-
-            GameObject emptyCluster = null;
-            float dist = float.MaxValue;
+            // find neighbour who if further from closest chaser
+            GameObject furthestNeighbor = null;
+            //float dist = Vector3.Distance(closestChaser.transform.position, furthestNeighbor.transform.position);
+            float dist = 0;//Vector3.Distance(closestChaser.transform.position, furthestNeighbor.transform.position);
             foreach (GameObject gb in neighbors)
             {
-                if (ClusterCheck(gb.transform) && Vector3.Distance(transform.position,gb.transform.position)< dist)
+                if (Vector3.Distance(closestChaser.transform.position, gb.transform.position) > dist)
                 {
-                    dist = Vector3.Distance(transform.position, gb.transform.position);
-                    emptyCluster = gb;
+                    furthestNeighbor = gb;
+                    dist = Vector3.Distance(closestChaser.transform.position, gb.transform.position);
                 }
             }
-            Debug.Log(">>>>>>>>>>>>>>>>> nearest empty cluster: " + emptyCluster.name);
-            Debug.Log(">>>>>>>>>>>>>>>>> Cluster Name: " + emptyCluster.GetComponent<Cluster>().clusterName);
 
-            if (emptyCluster = null)
-            {
-                Debug.Log("Closest empty cluster was null");
-                emptyCluster = neighbors[Random.Range(0, neighbors.Count)];
-            }
-            return emptyCluster.GetComponent<Cluster>().GetRandomNode().transform;
-            //return AllNodesParent.transform.GetChild(Random.Range(0,AllNodesParent.transform.childCount));
+            GameObject node = furthestNeighbor.GetComponent<Node>().cluster;
+            Debug.Log("Furthest neigbor: "+furthestNeighbor.name);
+
+            Transform bestNeighborNode = furthestNeighbor.GetComponent<Cluster>().GetBestCoverPoint(transform).transform;
+            Debug.Log("Bestneighbor's best node: "+bestNeighborNode.name);
+
+            return bestNeighborNode;
+
         }
         else
         {
-            // find best spot in current cluster
-            NPCRef.safe = true;
+            // find best spot in current cluster, wait at the best node, until its not safe anymore
+            if(Vector3.Distance(closestChaser.position, transform.position) > 10)
+                NPCRef.safe = true;
+
             Transform best = NPCRef.currentCluster.GetComponent<Cluster>().GetBestCoverPoint(transform).transform;
             bestCoverNode = best;
             return best;

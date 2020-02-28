@@ -59,7 +59,7 @@ public class Cluster : MonoBehaviour
 
     public GameObject GetRandomNode()
     {
-        int r = Random.Range(0, clusterExits.Count);
+        int r = Random.Range(0, clusterExits.Count-1);
         /*
         if (clusterElements[r] == null)
         {
@@ -67,6 +67,6 @@ public class Cluster : MonoBehaviour
         }
         return clusterElements[r].gameObject;
         */
-        return clusterExits[r];
+        return clusterExits[0].gameObject;
     }
 }
