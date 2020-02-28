@@ -18,6 +18,8 @@ public class ChaserBehavior : MonoBehaviour
 
     NPC_Pathfinder NPCRef;
 
+    public bool isTargetInSameCluster;
+
     void Start()
     {
         NPCRef = GetComponent<NPC_Pathfinder>();
@@ -31,10 +33,30 @@ public class ChaserBehavior : MonoBehaviour
     public Transform RequestDestination()
     {
         // returns a proper destination for NPC to follow. Can interupt current path to take a new path.
+        NPC_Pathfinder targetScriptRef = ChaseTarget.GetComponent<NPC_Pathfinder>();
 
-        // random for now
-        int r = Random.Range(0, AllNodesParent.transform.childCount);
-        return AllNodesParent.transform.GetChild(r);
+        if (NPCRef.currentCluster.transform.name != targetScriptRef.currentCluster.transform.name)
+        //if (NPCRef.currentCluster.transform.name != "R1Cluster")
+        {
+            // then go to this cluster.
+            isTargetInSameCluster = false;
+            int r = Random.Range(0,targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>().clusterExits.Count);
+            return targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>().clusterExits[r].transform;
+        }
+        else
+        {
+            isTargetInSameCluster = true;
+            //same cluster
+            // if close and in line of sight, seek
+            if (Vector3.Distance(ChaseTarget.transform.position, transform.position) < 15f)
+            {
+                //check line of sight
+                // seek
+                return ChaseTarget.transform;
+            }
+            else
+                return targetScriptRef.FindClosestNode(ChaseTarget.transform.position).transform;
+        }
 
     }
 }

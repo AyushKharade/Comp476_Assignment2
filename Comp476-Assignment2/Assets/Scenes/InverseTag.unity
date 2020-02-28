@@ -2077,7 +2077,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllNodesParent: {fileID: 855570048}
   AllClusterParent: {fileID: 1664991565}
-  ChaseTarget: {fileID: 245754736}
+  ChaseTarget: {fileID: 1181563417348417507}
+  isTargetInSameCluster: 0
 --- !u!1 &224951775
 GameObject:
   m_ObjectHideFlags: 0
@@ -4244,7 +4245,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllNodesParent: {fileID: 855570048}
   AllClusterParent: {fileID: 1664991565}
-  ChaseTarget: {fileID: 245754736}
+  ChaseTarget: {fileID: 1181563417348417507}
+  isTargetInSameCluster: 0
 --- !u!1 &505384009
 GameObject:
   m_ObjectHideFlags: 0
@@ -19360,7 +19362,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllNodesParent: {fileID: 855570048}
   AllClusterParent: {fileID: 1664991565}
-  ChaseTarget: {fileID: 245754736}
+  ChaseTarget: {fileID: 1181563417348417507}
+  isTargetInSameCluster: 0
 --- !u!4 &1574951440000864669
 Transform:
   m_ObjectHideFlags: 0

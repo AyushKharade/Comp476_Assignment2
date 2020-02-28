@@ -29,6 +29,7 @@ public class NPC_Pathfinder : MonoBehaviour
     public bool hasDestination;
     bool moving;
     bool orienting;
+    bool seekingTarget;
 
     int traverseIndex = 0;
 
@@ -37,10 +38,23 @@ public class NPC_Pathfinder : MonoBehaviour
     RunnerBehavior RBehavior;
     ChaserBehavior CBehavior;
 
+    // temp timer
+    float RequestTimer = 0;
+
+
+    private void Awake()
+    {
+        closestNode = FindClosestNode(transform.position);
+        currentCluster = closestNode.GetComponent<Node>().cluster;
+    }
+
     void Start()
     {
         AStarScript = AStarRef.GetComponent<Pathfinding>();
         animator = GetComponent<Animator>();
+
+        //closestNode = FindClosestNode(transform.position);
+        //currentCluster = closestNode.GetComponent<Node>().cluster;
 
         if (NPCType + "" == "Chaser")
         {
@@ -60,7 +74,7 @@ public class NPC_Pathfinder : MonoBehaviour
         if (hasDestination && !moving)
         {
             traverseIndex = 0;
-            if (followPath==null)
+            if (followPath == null)
             {
                 hasDestination = false;
                 moving = false;
@@ -72,13 +86,20 @@ public class NPC_Pathfinder : MonoBehaviour
             }
         }
         else if (hasDestination && moving)
+        {
             MoveToTarget();
+        }
         else if (!hasDestination)
         {
             //GoToNewPosition();
             if (NPCType + "" == "Chaser")
             {
-                ChaserNewDestination();
+                RequestTimer += Time.deltaTime;
+                if (RequestTimer > 0.5f)
+                {
+                    RequestTimer = 0;
+                    ChaserNewDestination();
+                }
             }
             else if (NPCType + "" == "Runner")
             {
@@ -98,27 +119,33 @@ public class NPC_Pathfinder : MonoBehaviour
                 animator.SetFloat("Locomotion", animator.GetFloat("Locomotion") - 0.04f);
         }
 
-        if (!hasDestination)
-        {
-            if (Input.GetKeyDown(KeyCode.T))
-                GoToNewPosition();
-        }
     }
 
+    
 
     void ChaserNewDestination()
     {
         currentDestination = CBehavior.RequestDestination();
-        closestNode = FindClosestNode();
-        followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
-        if (closestNode.transform.name != currentDestination.transform.name || followPath != null)
+        if (currentDestination.tag == "Node")
         {
-            hasDestination = true;
+            seekingTarget = false;
+            closestNode = FindClosestNode(transform.position);
+            followPath = AStarScript.ClusterPathFind(closestNode, currentDestination.gameObject);
+
+            if (closestNode.transform.name != currentDestination.transform.name || followPath != null)
+            {
+                hasDestination = true;
+            }
+            else
+            {
+                Debug.Log("Cancelled Destination: " + currentDestination.transform.name + " for " + transform.name);
+                hasDestination = false;
+                currentDestination = null;
+            }
         }
         else
         {
-            hasDestination = false;
-            currentDestination = null;
+            seekingTarget = true;
         }
     }
 
@@ -141,41 +168,61 @@ public class NPC_Pathfinder : MonoBehaviour
 
     void MoveToTarget()
     {
-        currentCluster = currentTarget.GetComponent<Node>().cluster;
-        Vector3 dir = transform.forward;
-        if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
+        if (!seekingTarget)
         {
-            dir = (currentTarget.position - transform.position).normalized;
-            if (Vector3.Angle(transform.forward, dir) < 10)
+            currentCluster = currentTarget.GetComponent<Node>().cluster;
+            Vector3 dir = transform.forward;
+            if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
             {
-                transform.parent.Translate(dir * mSpeed * Time.deltaTime);
-                orienting = false;
+                dir = (currentTarget.position - transform.position).normalized;
+                if (Vector3.Angle(transform.forward, dir) < 10)
+                {
+                    transform.parent.Translate(dir * mSpeed * Time.deltaTime);
+                    orienting = false;
+                }
+                else
+                    orienting = true;
+
             }
             else
-                orienting = true;
+            {
+                Debug.Log("Reached path index: " + traverseIndex);
+                if (traverseIndex < followPath.Count - 1)
+                {
+                    traverseIndex++;
+                    currentTarget = followPath[traverseIndex];
+                }
+            }
 
+
+            if (traverseIndex == followPath.Count || Vector3.Distance(transform.position, currentDestination.position) < 0.2f)
+            {
+                Debug.Log("Destination Reached.");
+                hasDestination = false;
+                moving = false;
+                currentDestination.GetComponent<Node>().ResetMaterial();
+            }
+
+            // align orietation
+            Align(dir);
         }
         else
         {
-            Debug.Log("Reached path index: " + traverseIndex);
-            if (traverseIndex < followPath.Count - 1)
+            //seeking target
+            Vector3 dir = transform.forward;
+            if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
             {
-                traverseIndex++;
-                currentTarget = followPath[traverseIndex];
+                dir = (currentTarget.position - transform.position).normalized;
+                if (Vector3.Angle(transform.forward, dir) < 10)
+                {
+                    transform.parent.Translate(dir * mSpeed * Time.deltaTime);
+                    orienting = false;
+                }
+                else
+                    orienting = true;
             }
+            Align(dir);
         }
-
-        
-        if (traverseIndex == followPath.Count || Vector3.Distance(transform.position, currentDestination.position) < 0.2f)
-        {
-            Debug.Log("Destination Reached.");
-            hasDestination = false;
-            moving = false;
-            currentDestination.GetComponent<Node>().ResetMaterial();
-        }
-
-        // align orietation
-        Align(dir);
     }
 
 
@@ -198,10 +245,11 @@ public class NPC_Pathfinder : MonoBehaviour
         hasDestination = true;
         int r = Random.Range(0, AllNodesParent.transform.childCount);
         currentDestination = AllNodesParent.transform.GetChild(r);
-        followPath = AStarScript.ClusterPathFind(FindClosestNode(),currentDestination.gameObject);
+        //followPath = AStarScript.ClusterPathFind(FindClosestNode(),currentDestination.gameObject);
+        followPath = AStarScript.ClusterPathFind(FindClosestNode(transform.position),currentDestination.gameObject);
     }
 
-
+    /*
     GameObject FindClosestNode()
     {
         //overlap sphere
@@ -228,6 +276,40 @@ public class NPC_Pathfinder : MonoBehaviour
                         closestDistance = Vector3.Distance(transform.position, col.transform.position);
                     }
                     
+                }
+            }
+        }
+        return ClosestNode;
+        //Debug.Log("Closest Node: "+closestNode.transform.name);
+    }
+    */
+
+    public GameObject FindClosestNode(Vector3 pos)
+    {
+        //overlap sphere
+        Collider[] arr = Physics.OverlapSphere(pos, 15f);
+        GameObject ClosestNode = null;
+        float closestDistance = float.MaxValue;
+        foreach (Collider col in arr)
+        {
+            if (col.tag == "Node")
+            {
+                if (Vector3.Distance(transform.position, col.transform.position) < closestDistance)
+                {
+                    Vector3 rayOutPos = transform.position;
+                    rayOutPos.y += 0.2f;
+                    Vector3 dir = (col.transform.position - transform.position).normalized;
+
+                    RaycastHit hitobj;
+                    Physics.Raycast(rayOutPos, dir, out hitobj);     // Make sure its visible
+                    //Debug.Log("Ray out towards "+col.name+" hit: "+hitobj.collider.name);
+
+                    if (hitobj.collider.tag == "Node" && hitobj.collider.name == col.name)
+                    {
+                        ClosestNode = col.gameObject;
+                        closestDistance = Vector3.Distance(transform.position, col.transform.position);
+                    }
+
                 }
             }
         }
