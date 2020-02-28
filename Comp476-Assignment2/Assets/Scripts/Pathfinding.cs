@@ -33,8 +33,8 @@ public class Pathfinding : MonoBehaviour
 
     bool startedPathfinding;
 
-    public List<GameObject> OpenSet;
-    public HashSet<GameObject> ClosedSet;
+    public List<GameObject> OpenSet=new List<GameObject>();
+    public HashSet<GameObject> ClosedSet= new HashSet<GameObject>();
 
     LinkedList<Transform> Path = new LinkedList<Transform>();       // NPC Follows this path.
 
@@ -57,8 +57,6 @@ public class Pathfinding : MonoBehaviour
 
     void Start()
     {
-        OpenSet = new List<GameObject>();
-        ClosedSet = new HashSet<GameObject>();
 
         //GameObject currentSelectedText=GameObject.FindGameObjectWithTag("CurrentSelected");
         InitStartCosts();
@@ -186,26 +184,17 @@ public class Pathfinding : MonoBehaviour
     }
 
 
-    //public List<Transform> ClusterPathFind(GameObject startNode, GameObject endNode)
-    public List<Vector3> ClusterPathFind(GameObject startNode, GameObject endNode)
+    public List<Transform> ClusterPathFind(GameObject startNode, GameObject endNode)
     {
         List<Transform> npcPath = new List<Transform>();
-
-        List<Vector3> vectorPath = new List<Vector3>();
 
         StartNode = startNode;
         EndNode = endNode;
         Debug.Log("set start and end nodes.");
 
         npcPath=StartPathfindingCluster(true);
-        foreach (Transform T in npcPath)
-        {
-            vectorPath.Add(T.position);
-        }
 
-
-        //return npcPath;
-        return vectorPath;
+        return npcPath;
     }
 
     public List<int> ReturnTest()
@@ -363,14 +352,27 @@ public class Pathfinding : MonoBehaviour
 
             // we have all the nodes we need to traverse through, draw these
             List<Transform> clusterTraversePath=new List<Transform>();
+            List<Transform> clusterTotalPath=new List<Transform>();
+
             for (int i=0; i< (traverseThroughNodes.Count - 1); i++)
             {
                  clusterTraversePath= StartPathfindingRegular(traverseThroughNodes[i],traverseThroughNodes[i+1]);
-                DrawPath(clusterTraversePath);
+                foreach (Transform T in clusterTraversePath)
+                {
+                    clusterTotalPath.Add(T);
+                }
+                if(!returnPath)
+                    DrawPath(clusterTraversePath);
             }
-
+            /*
+            Debug.Log("Printing total traverse path");
+            foreach (Transform T in clusterTotalPath)
+            {
+                Debug.Log(T.name + ">> ");
+            }
+            */
             if (returnPath)
-                return clusterTraversePath;
+                return clusterTotalPath;
             else
                 return null;
 

@@ -21,90 +21,65 @@ public class NPC_Pathfinder : MonoBehaviour
     int pathTraverseCounter=0;
     Transform currentTarget;
     public Transform currentDestination;
-    public Transform closestNode;
+    public GameObject closestNode;
 
-    //public List<Transform> followPath = new List<Transform>();
-    public List<Vector3> followPath = new List<Vector3>();
-    public List<int> numbers = new List<int>();
+    public List<Transform> followPath = new List<Transform>();
+    //public List<Vector3> followPath = new List<Vector3>();
 
     bool hasDestination;
+    bool moving;
+
+    int traverseIndex = 0;
+
 
 
     void Start()
     {
-
-        //Debug.Log("" + AStarScript.scriptfunctionaccessTest);
-
-        //AStarRef = GameObject.FindGameObjectWithTag("A*");
-        /*
-        if (AStarRef != null)
-            Debug.Log("AStarRef is not null");
-        //AStarScript = AStarRef.GetComponent<Pathfinding>();
+        AStarScript = AStarRef.GetComponent<Pathfinding>();
 
         int r = Random.Range(0, AllNodesParent.transform.childCount);
         currentDestination = AllNodesParent.transform.GetChild(r);
-        Debug.Log("Destination Set: " + currentDestination.name);
+        currentDestination.GetComponent<MeshRenderer>().material.color = Color.red;
+        closestNode = FindClosestNode();
 
-        closestNode = FindClosestNode().transform;
-        //followPath = AStarRef.GetComponent<Pathfinding>().ClusterPathFind(closestNode.gameObject, currentTarget.gameObject);
-        numbers = AStarScript.ReturnTest();
-        Debug.Log(AStarRef.GetComponent<Pathfinding>().scriptfunctionaccessTest);
-    */
+        followPath = AStarScript.ClusterPathFind(closestNode,currentDestination.gameObject);
+        hasDestination = true;
+        
     }
 
     
 
     void Update()
     {
-        /*
-        if (!hasDestination)
+        if (hasDestination && !moving)
         {
-            if (followPath != null)
-            {
-                hasDestination = true;
-                closestNode = FindClosestNode().transform;
-                followPath = AStarScript.ClusterPathFind(closestNode.gameObject, currentTarget.gameObject);
+            traverseIndex = 0;
+            currentTarget = followPath[0];
+            moving = true;
+        }
+        else if (hasDestination && moving)
+            MoveToTarget();
+    }
 
-                currentTarget = followPath[0];
-                Debug.Log("Received Path");
-            }
-            else
-            {
-                Debug.Log("Path not received.");
-            }
+    void MoveToTarget()
+    {
+        if (Vector3.Distance(transform.position, currentTarget.position) > 0.2f)
+        {
+            Vector3 dir = (currentTarget.position - transform.position).normalized;
+            transform.Translate(dir * mSpeed * Time.deltaTime);
         }
         else
         {
-            // one by one follow path
-            if (Vector3.Distance(currentTarget.position, transform.position) == 0 && pathTraverseCounter != followPath.Count)
-            {
-                pathTraverseCounter++;
-                currentTarget = followPath[pathTraverseCounter];
-
-
-                Vector3 moveDir = (currentTarget.position - transform.position).normalized;
-                transform.Translate(moveDir * mSpeed * Time.deltaTime);
-            }
+            Debug.Log("Reached path index: " + traverseIndex);
+            traverseIndex++;
+            currentTarget = followPath[traverseIndex];
         }
-        */
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (traverseIndex == followPath.Count && Vector3.Distance(transform.position, currentDestination.position) > 0.2f)
         {
-            //Debug.Log("" + AStarScript.scriptfunctionaccessTest);
-            //AStarRef = GameObject.FindGameObjectWithTag("A*");
-            //AStarScript = AStarRef.GetComponent<Pathfinding>();
-
-            int r = Random.Range(0, AllNodesParent.transform.childCount);
-            currentDestination = AllNodesParent.transform.GetChild(r);
-            Debug.Log("Destination Set: " + currentDestination.name);
-
-            closestNode = FindClosestNode().transform;
-            numbers = AStarRef.GetComponent<Pathfinding>().ReturnTest();
-            int n=AStarRef.GetComponent<Pathfinding>().ReturnTestJustNumber();
-            Debug.Log(""+n);
-            Debug.Log(AStarRef.GetComponent<Pathfinding>().scriptfunctionaccessTest);
-            followPath= AStarRef.GetComponent<Pathfinding>().ClusterPathFind(closestNode.gameObject, currentDestination.gameObject);
-
+            Debug.Log("Destination Reached.");
+            hasDestination = false;
+            currentDestination.GetComponent<Node>().ResetMaterial();
         }
     }
 
