@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class NavMeshChaser : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class NavMeshChaser : MonoBehaviour
     public float velocityMagnitude;
 
     Animator animator;
+
+    public Text TaggedCount;
+    public int TaggedCountInt;
 
     void Start()
     {
@@ -65,8 +69,8 @@ public class NavMeshChaser : MonoBehaviour
     {
         if (other.tag == "Runner")
         {
-            Debug.Log("Found");
-            NavigationAgent.isStopped = true;
+            TaggedCountInt++;
+            TaggedCount.text = "Tagged Count:" + TaggedCountInt;
         }
     }
 }
