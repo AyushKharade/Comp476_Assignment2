@@ -1414,7 +1414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 175755727}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.06, y: -10.770184, z: 4.29}
+  m_LocalPosition: {x: -18.06, y: -10.770184, z: -8.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 223482641}
@@ -2022,7 +2022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 2
+  mSpeed: 3.5
   allowMovement: 1
   NPCType: 0
   AStarRef: {fileID: 457386175}
@@ -2088,6 +2088,12 @@ MonoBehaviour:
   distanceToTarget: 0
   curTargetCluster: {fileID: 0}
   curDestinationCluster: {fileID: 0}
+  useClosestORRandomClusterExit: 0
+  ClosestOrRandom: 'If above boolean is check, NPC will use closest node for exiting
+    / entering clusters.
+
+
+    If Its unchecked, NPCs will take random exits / entries.'
 --- !u!54 &223482646
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4214,7 +4220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 2
+  mSpeed: 3.5
   allowMovement: 1
   NPCType: 0
   AStarRef: {fileID: 457386175}
@@ -4280,6 +4286,12 @@ MonoBehaviour:
   distanceToTarget: 0
   curTargetCluster: {fileID: 0}
   curDestinationCluster: {fileID: 0}
+  useClosestORRandomClusterExit: 0
+  ClosestOrRandom: 'If above boolean is check, NPC will use closest node for exiting
+    / entering clusters.
+
+
+    If Its unchecked, NPCs will take random exits / entries.'
 --- !u!54 &464107186
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9373,7 +9385,7 @@ MonoBehaviour:
   - {fileID: 888118951}
   Parent: {fileID: 0}
   cluster: {fileID: 542560554}
-  coverValue: 0.65
+  coverValue: 0.9
 --- !u!23 &1094502247
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10594,7 +10606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222465124}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.3, y: -10.770184, z: 4.07}
+  m_LocalPosition: {x: -5.63, y: -10.770184, z: 4.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2492428306584935506}
@@ -19704,6 +19716,12 @@ MonoBehaviour:
   distanceToTarget: 0
   curTargetCluster: {fileID: 0}
   curDestinationCluster: {fileID: 0}
+  useClosestORRandomClusterExit: 1
+  ClosestOrRandom: 'If above boolean is check, NPC will use closest node for exiting
+    / entering clusters.
+
+
+    If Its unchecked, NPCs will take random exits / entries.'
 --- !u!54 &1499060469771103811
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20443,7 +20461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8942cff907dc8a4d8a5bd30ca0a5171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 2
+  mSpeed: 3.5
   allowMovement: 1
   NPCType: 0
   AStarRef: {fileID: 457386175}

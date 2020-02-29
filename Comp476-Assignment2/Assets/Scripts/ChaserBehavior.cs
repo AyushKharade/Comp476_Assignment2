@@ -25,6 +25,11 @@ public class ChaserBehavior : MonoBehaviour
     public Transform curTargetCluster=null;
     public Transform curDestinationCluster=null;
 
+    [Header("Settings")]
+    public bool useClosestORRandomClusterExit;
+    [TextArea(3, 6)]
+    public string ClosestOrRandom;
+
     void Start()
     {
         NPCRef = GetComponent<NPC_Pathfinder>();
@@ -80,7 +85,13 @@ public class ChaserBehavior : MonoBehaviour
             // then go to this cluster.
             isTargetInSameCluster = false;
             curDestinationCluster = targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>().transform;
-            return targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>().GetFastestExit(transform.position,ChaseTarget.transform.position).transform;
+            if (useClosestORRandomClusterExit)
+                return targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>().GetFastestExit(transform.position, ChaseTarget.transform.position).transform;
+            else
+            {
+                Cluster temp = targetScriptRef.closestNode.GetComponent<Node>().cluster.GetComponent<Cluster>();
+                return temp.clusterExits[Random.Range(0, temp.clusterExits.Count)].transform;
+            }
         }
         else
         {
