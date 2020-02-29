@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RunnerBehavior : MonoBehaviour
 {
@@ -29,6 +30,10 @@ public class RunnerBehavior : MonoBehaviour
     [Header("States")]
     public bool isCurrentClusterEmpty;    // if true, stand at the highest cover value node.
     public bool isBeingSeeked;            // if anyone is actively seeking, run faster.
+
+    [Header("UI Text Field")]
+    public Text taggedCounter;
+    public int taggedCounterINT = 0;
 
     void Start()
     {
@@ -135,4 +140,17 @@ public class RunnerBehavior : MonoBehaviour
             return best;
         }
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //Debug.Log("Collided Trigger");
+        if (other.tag == "Chaser")
+        {
+            taggedCounterINT+=1;
+            taggedCounter.text = "Tagged Counter: " + taggedCounterINT;
+        }
+    }
+
+   
 }
