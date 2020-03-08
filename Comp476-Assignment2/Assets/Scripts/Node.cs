@@ -29,6 +29,9 @@ public class Node : MonoBehaviour
     Material defaultMat;
 
     public GameObject cluster;
+    [Header("Tactical Pathfinding")]
+    [Range(0,1)]
+    public float coverValue;
 
     void Start()
     {

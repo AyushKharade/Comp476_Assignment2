@@ -8,6 +8,8 @@ TagManager:
   - A*
   - Map
   - Clusters
+  - Chaser
+  - Runner
   layers:
   - Default
   - TransparentFX

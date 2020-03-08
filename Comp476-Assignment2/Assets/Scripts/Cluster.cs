@@ -6,7 +6,7 @@ public class Cluster : MonoBehaviour
 {
     public string clusterName;
 
-    //public List<GameObject> clusterElements=new List<GameObject>();
+    public List<GameObject> clusterElements=new List<GameObject>();
     public List<GameObject> clusterExits=new List<GameObject>();
 
 
@@ -37,5 +37,36 @@ public class Cluster : MonoBehaviour
             Debug.Log("Didnt find shortest exit");
         }
         return exitNode;
+    }
+
+    public GameObject GetBestCoverPoint(Transform pos)            // get best cover point relative to position
+    {
+        GameObject best = null;
+        float coverValue = 0;
+        float distance = float.MaxValue;
+        foreach (GameObject gb in clusterElements)
+        {
+            if (gb.GetComponent<Node>().coverValue > coverValue
+                &&
+                Vector3.Distance(pos.position, gb.transform.position) < distance)
+            {
+                coverValue = gb.GetComponent<Node>().coverValue;
+                best = gb;
+            }
+        }
+        return best;
+    }
+
+    public GameObject GetRandomNode()
+    {
+        int r = Random.Range(0, clusterExits.Count-1);
+        /*
+        if (clusterElements[r] == null)
+        {
+            return clusterElements[0].gameObject;
+        }
+        return clusterElements[r].gameObject;
+        */
+        return clusterExits[0].gameObject;
     }
 }

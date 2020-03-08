@@ -26,14 +26,15 @@ public class Pathfinding : MonoBehaviour
     public GameObject currentSelectedText;
     GameObject selectedHighlight;
 
+    [Header("Node & Cluster Parent Ref")]
     public GameObject AllNodesParent;
     public GameObject AllClustersParent;
 
 
     bool startedPathfinding;
 
-    public List<GameObject> OpenSet;
-    public HashSet<GameObject> ClosedSet;
+    public List<GameObject> OpenSet=new List<GameObject>();
+    public HashSet<GameObject> ClosedSet= new HashSet<GameObject>();
 
     LinkedList<Transform> Path = new LinkedList<Transform>();       // NPC Follows this path.
 
@@ -46,19 +47,29 @@ public class Pathfinding : MonoBehaviour
     [Header("Heuristics")]
     public bool clusterHeuristic;     // if enable, call a seperate function
 
+    [Header("NPC Scene")]
+    public bool NPCScene;
+    public bool hideClusters;
+    public bool hideNodes;
+
+    // test
+
     void Start()
     {
-        OpenSet = new List<GameObject>();
-        ClosedSet = new HashSet<GameObject>();
 
         //GameObject currentSelectedText=GameObject.FindGameObjectWithTag("CurrentSelected");
         InitStartCosts();
+
+        if (hideNodes)
+            HideNodes();
+        if (hideClusters)
+            HideClusters();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!startedPathfinding)
+        if(!startedPathfinding && !NPCScene)
             MouseInput();
 
         if (showingNeighbours)
@@ -162,7 +173,7 @@ public class Pathfinding : MonoBehaviour
     {
         if (clusterHeuristic)
         {
-            StartPathfindingCluster();
+            StartPathfindingCluster(false);
         }
         else
         {
@@ -172,7 +183,33 @@ public class Pathfinding : MonoBehaviour
     }
 
 
-    
+    public List<Transform> ClusterPathFind(GameObject startNode, GameObject endNode)
+    {
+        List<Transform> npcPath = new List<Transform>();
+
+        StartNode = startNode;
+        EndNode = endNode;
+        Debug.Log("set start and end nodes.");
+
+        npcPath=StartPathfindingCluster(true);
+
+        return npcPath;
+    }
+
+    public List<int> ReturnTest()
+    {
+        List<int> temp = new List<int>();
+        temp.Add(2);
+        temp.Add(6);
+        temp.Add(3);
+
+        return temp;
+    }
+
+    public int ReturnTestJustNumber()
+    {
+        return 3;
+    }
 
 
     // Pathfinding Function:
@@ -258,19 +295,20 @@ public class Pathfinding : MonoBehaviour
 
 
     // cluster heuristics:
-    void StartPathfindingCluster()
+    List<Transform> StartPathfindingCluster(bool returnPath)
     {
         // check if start node and end nodes are both in the same cluster, if so, do regular path finding.
         GameObject clusterStart = StartNode.GetComponent<Node>().cluster;
         GameObject clusterEnd = EndNode.GetComponent<Node>().cluster;
 
-        if (clusterStart.transform.name == clusterEnd.transform.name)
+        if (clusterStart.transform.name == clusterEnd.transform.name && !NPCScene)
         {
             //StartPathfindingRegular();
             Debug.Log("Path within the same cluster");
             List<Transform> regularPath = new List<Transform>();
             regularPath = StartPathfindingRegular(StartNode,EndNode);
             DrawPath(regularPath);
+            return null;
         }
         else
         {
@@ -312,35 +350,42 @@ public class Pathfinding : MonoBehaviour
 
 
             // we have all the nodes we need to traverse through, draw these
+            List<Transform> clusterTraversePath=new List<Transform>();
+            List<Transform> clusterTotalPath=new List<Transform>();
+
             for (int i=0; i< (traverseThroughNodes.Count - 1); i++)
             {
-                List<Transform> temp = StartPathfindingRegular(traverseThroughNodes[i],traverseThroughNodes[i+1]);
-                DrawPath(temp);
+                 clusterTraversePath= StartPathfindingRegular(traverseThroughNodes[i],traverseThroughNodes[i+1]);
+                foreach (Transform T in clusterTraversePath)
+                {
+                    clusterTotalPath.Add(T);
+                }
+                if(!returnPath)
+                    DrawPath(clusterTraversePath);
+            }
+            /*
+            Debug.Log("Printing total traverse path");
+            foreach (Transform T in clusterTotalPath)
+            {
+                Debug.Log(T.name + ">> ");
+            }
+            */
+
+
+            if (returnPath)
+            {
+                ResetPathfinding();
+                return clusterTotalPath;
+            }
+            else
+            {
+                DrawPath(clusterTotalPath);
+                return null;
             }
 
-
         }
     }
-
-
-    // function not used
-    public void TracePath2()
-    {
-        List<Transform> path = new List<Transform>();
-        GameObject curNode = EndNode;
-
-        path.Add(EndNode.transform);
-        while (curNode.GetComponent<Node>().Parent != null)
-        {
-            path.Add(curNode.GetComponent<Node>().Parent.transform);
-            curNode = curNode.GetComponent<Node>().Parent;
-        }
-
-        path.Reverse();
-
-        // now draw
-        DrawPath(path);
-    }
+    
 
     void DrawPath(List<Transform> lst)
     {
@@ -393,6 +438,24 @@ public class Pathfinding : MonoBehaviour
                 nb.GetComponent<MeshRenderer>().material = YellowMat;
                 showingNeighbours = true;
             }
+        }
+    }
+
+    void HideNodes()
+    {
+        int count = AllNodesParent.transform.childCount;
+        for (int i = 0; i < count; i++)
+        {
+            AllNodesParent.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
+        }
+    }
+
+    void HideClusters()
+    {
+        int count = AllClustersParent.transform.childCount;
+        for (int i = 0; i < count; i++)
+        {
+            AllClustersParent.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
         }
     }
 }
